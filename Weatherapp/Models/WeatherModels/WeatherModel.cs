@@ -9,4 +9,7 @@ public class WeatherModel
 
     [JsonProperty("current")]
     public Current Current { get; set; }
+
+    [JsonProperty("forecast")]
+    public Forecast Forecast { get; set; }
 }
