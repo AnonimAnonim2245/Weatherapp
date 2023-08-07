@@ -26,7 +26,7 @@
     <ScrollView>
         <VerticalStackLayout>
             <Grid RowDefinitions="*,auto" ColumnDefinitions="*,auto,auto" Padding="15,15" ColumnSpacing="20" >
-                <Label HorizontalTextAlignment="Start" Text="{Binding Weather.Location.Name}" Grid.Column="0" Grid.Row="0" VerticalTextAlignment="End" FontSize="30" TextColor="#dee8f4" FontFamily="Arial" FontAttributes="Bold"></Label>
+                <Label HorizontalTextAlignment="Start" Text="Bucuresti" Grid.Column="0" Grid.Row="0" VerticalTextAlignment="End" FontSize="30" TextColor="#dee8f4" FontFamily="Arial" FontAttributes="Bold"></Label>
                 <Label HorizontalTextAlignment="Start" Grid.Column="2" Grid.Row="0" Padding="5,5"  FontSize="20"  VerticalTextAlignment="End" TextColor="#dee8f4" Text="{x:Static helpers:IconFont.dots}" FontFamily="MOON" />
                 <Label HorizontalTextAlignment="Start" Grid.Column="1" Grid.Row="0"  Padding="5,5" FontSize="20"  VerticalTextAlignment="End" TextColor="#dee8f4" Text="{x:Static helpers:IconFont.city}" FontFamily="MOON" />
                 <Label HorizontalTextAlignment="Start" Padding="0,0" Grid.Column="0" Grid.Row="1" FontSize="12"  Text= "{x:Static helpers:IconFont.location }"  FontFamily="MOON" VerticalTextAlignment="Start" TextColor="#dee8f4"/>
@@ -34,14 +34,14 @@
             </Grid>
 
             <Grid RowDefinitions="130,auto,auto,auto,auto,30,auto" ColumnDefinitions="*,auto,auto" Padding="15,0" RowSpacing="-20">
-                <Label HorizontalTextAlignment="Start" Grid.Column="0" Grid.RowSpan="2" Grid.Row="1"  Text="{Binding Weather.Current.TempC,Converter={StaticResource DoubleToIntConverter},StringFormat='{0}&#186;'}" VerticalTextAlignment="End" FontSize="100" TextColor="#dee8f4" FontFamily="Arial" FontAttributes="Bold"></Label>
+                <Label HorizontalTextAlignment="Start" Grid.Column="0" Grid.RowSpan="2" Grid.Row="1"  Text="12&#186;'}" VerticalTextAlignment="End" FontSize="100" TextColor="#dee8f4" FontFamily="Arial" FontAttributes="Bold"></Label>
                 <Border HorizontalOptions="Start" Grid.Column="1" Grid.Row="1" VerticalOptions="End" StrokeShape="RoundRectangle 40,40,40,40" BackgroundColor ="#80262626" WidthRequest="69" HeightRequest="25" StrokeThickness="0" >
                     <Label Padding="10,0" TextColor="#dee8f4" VerticalTextAlignment="Center">
 
                         <Label.FormattedText      HorizontalTextAlignment="Start">
                             <FormattedString >
                                 <Span  TextColor="#dee8f4" Text= "{x:Static helpers:IconFont.umbrella }" FontFamily="MOON" FontSize="16"   FontAttributes="Bold"/>
-                                <Span  TextColor="#dee8f4"  Text="{Binding Weather.Current.Humidity,Converter={StaticResource DoubleToIntConverter},StringFormat='  {0}%'}" FontFamily="Arial" FontSize="13"   FontAttributes="Bold"/>
+                                <Span  TextColor="#dee8f4"  Text="2%" FontFamily="Arial" FontSize="13"   FontAttributes="Bold"/>
 
                             </FormattedString>
                         </Label.FormattedText>
@@ -53,7 +53,7 @@
                         <Label.FormattedText      HorizontalTextAlignment="Start">
                             <FormattedString >
                                 <Span  TextColor="#dee8f4" Text= "{x:Static helpers:IconFont.man }" FontFamily="MOON" FontSize="16"   FontAttributes="Bold"/>
-                                <Span  TextColor="#dee8f4"  Text="{Binding Weather.Current.FeelslikeC,Converter={StaticResource DoubleToIntConverter},StringFormat='   {0}&#186;'}" FontFamily="Arial" FontSize="13"   FontAttributes="Bold"/>
+                                <Span  TextColor="#dee8f4"  Text="11&#186;" FontFamily="Arial" FontSize="13"   FontAttributes="Bold"/>
 
                             </FormattedString>
                         </Label.FormattedText>
@@ -67,7 +67,7 @@
                     <Label.FormattedText      HorizontalTextAlignment="Start">
                         <FormattedString >
                             <Span  TextColor="#dee8f4" Text= "{x:Static helpers:IconFont.arrowup }" FontFamily="MOON" FontSize="16"   FontAttributes="Bold"/>
-                            <Span  TextColor="#dee8f4"  Text="{Binding Weather.Forecast.Forecastday[1].Day.MaxtempC,Converter={StaticResource DoubleToIntConverter},StringFormat=' {0}&#186;'}" FontFamily="Arial" FontSize="16"   FontAttributes="None"/>
+                            <Span  TextColor="#dee8f4"  Text="15&#186;'}" FontFamily="Arial" FontSize="16"   FontAttributes="None"/>
 
                         </FormattedString>
                     </Label.FormattedText>
@@ -77,7 +77,7 @@
                     <Label.FormattedText      HorizontalTextAlignment="Start">
                         <FormattedString >
                             <Span  TextColor="#dee8f4" Text= "{x:Static helpers:IconFont.arrowdown}" FontFamily="MOON" FontSize="16"   FontAttributes="Bold"/>
-                            <Span  TextColor="#dee8f4" Text="{Binding Weather.Forecast.Forecastday[1].Day.MintempC,Converter={StaticResource DoubleToIntConverter},StringFormat=' {0}&#186;'}" FontFamily="Arial" FontSize="16"   FontAttributes="None"/>
+                            <Span  TextColor="#dee8f4" Text="4&#186;'}" FontFamily="Arial" FontSize="16"   FontAttributes="None"/>
 
                         </FormattedString>
                     </Label.FormattedText>

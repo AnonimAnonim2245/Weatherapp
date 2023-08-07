@@ -5,8 +5,6 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using Weatherapp.Models;
 using Weatherapp.Models.WeatherModels;
-using Weatherapp.Services;
-
 namespace Weatherapp.ViewModel;
 
 public partial class MainViewModel : BaseViewModel
@@ -18,76 +16,7 @@ public partial class MainViewModel : BaseViewModel
     [ObservableProperty]
     List<Weather> weathersday;
 
-    string apiKey = "a42ff4f6d3d44df0ace113329230108&q=Bucharest";
-
-    [ObservableProperty]
-    WeatherModel weather;
-
-    [ObservableProperty]
-    ObservableCollection<string> airQList;
-
-
-    private CancellationTokenSource _cancelTokenSource;
-    private bool _isCheckingLocation;
-
-    private readonly IHttpService _httpService;
-    public MainViewModel(IHttpService httpService)
-    {
-        _httpService = httpService;
-        Title = "Weather";
-        AirQList = new ObservableCollection<string>();
-        GetInitalDataCommand.Execute(null);
-    }
-
-
-
-    [RelayCommand]
-    private async void GetInitalData()
-    {
-        IsBusy = true;
-        try
-        {
-            _isCheckingLocation = true;
-
-            GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
-
-            _cancelTokenSource = new CancellationTokenSource();
-
-            Microsoft.Maui.Devices.Sensors.Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
-
-            if (location != null)
-            {
-                Weather = await _httpService.GetData(new WeatherModel(), $"https://api.weatherapi.com/v1/forecast.json?key={apiKey}&q={location.Latitude},{location.Longitude}&days=7&aqi=yes&alerts=no");
-
-                foreach (KeyValuePair<string, double> pair in Weather.Current.AirQuality)
-                {
-                    AirQList.Add($"{pair.Key.ToUpper()}\n{pair.Value:0.00}");
-                }
-            }
-            else
-            {
-                Weather = new WeatherModel();
-            }
-        }
-        catch (FeatureNotSupportedException fnsEx)
-        {
-            // Handle not supported on device exception
-        }
-        catch (FeatureNotEnabledException fneEx)
-        {
-            // Handle not enabled on device exception
-        }
-        catch (PermissionException pEx)
-        {
-            // Handle permission exception
-        }
-        catch (Exception ex)
-        {
-            // Unable to get location
-        }
-        IsBusy = false;
-
-    }
+   
     ObservableCollection<ChartItem> _chartCollection = new ObservableCollection<ChartItem>()
         {
             {new ChartItem(){ Value= 12, Label = "12°", IsLabelBold = false}},

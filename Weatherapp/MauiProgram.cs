@@ -2,7 +2,6 @@
 using Weatherapp.ViewModel;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Core.Hosting;
-using Weatherapp.Services;
 
 namespace Weatherapp;
 
@@ -27,7 +26,7 @@ public static class MauiProgram
 #endif
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddSingleton<MainViewModel>();
-        builder.Services.AddSingleton<IHttpService, HttpService>();
+
         return builder.Build();
 	}
 }
