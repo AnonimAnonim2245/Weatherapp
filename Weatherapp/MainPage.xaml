@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             xmlns:model="clr-namespace:Weatherapp.Models"
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             xmlns:cv="clr-namespace:AlohaKit.Controls;assembly=AlohaKit"
+             x:Class="Weatherapp.MainPage"
+             xmlns:helpers="clr-namespace:Weatherapp.Helpers"
+             x:DataType="vm:MainViewModel"
+             xmlns:vm="clr-namespace:Weatherapp.ViewModel"
+             xmlns:progressBar="clr-namespace:Syncfusion.Maui.ProgressBar;assembly=Syncfusion.Maui.ProgressBar"
+             BackgroundColor="#2878ff">
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="#2878ff"/>
+    </Page.Behaviors>
+
+    
+    <ScrollView>
+        <VerticalStackLayout>
+            <Grid RowDefinitions="*,auto" ColumnDefinitions="*,auto,auto" Padding="15,15" ColumnSpacing="20" >
+                <Label HorizontalTextAlignment="Start" Text="București" Grid.Column="0" Grid.Row="0" VerticalTextAlignment="End" FontSize="30" TextColor="#dee8f4" FontFamily="Arial" FontAttributes="Bold"></Label>
+                <Label HorizontalTextAlignment="Start" Grid.Column="2" Grid.Row="0" Padding="5,5"  FontSize="20"  VerticalTextAlignment="End" TextColor="#dee8f4" Text="{x:Static helpers:IconFont.dots}" FontFamily="MOON" />
+                <Label HorizontalTextAlignment="Start" Grid.Column="1" Grid.Row="0"  Padding="5,5" FontSize="20"  VerticalTextAlignment="End" TextColor="#dee8f4" Text="{x:Static helpers:IconFont.city}" FontFamily="MOON" />
+                <Label HorizontalTextAlignment="Start" Padding="0,0" Grid.Column="0" Grid.Row="1" FontSize="12"  Text= "{x:Static helpers:IconFont.location }"  FontFamily="MOON" VerticalTextAlignment="Start" TextColor="#dee8f4"/>
+                <Label HorizontalTextAlignment="Start" Padding="15,0" Grid.Column="0" Grid.Row="1" FontSize="12"  Text= "Just updated"  FontFamily="MOON" VerticalTextAlignment="Start" TextColor="#dee8f4"/>
+            </Grid>
+
+            <Grid RowDefinitions="130,auto,auto,auto,auto,30,auto" ColumnDefinitions="*,auto,auto" Padding="15,0" RowSpacing="-20">
+                <Label HorizontalTextAlignment="Start" Text="13&#186;" Grid.Column="0" Grid.RowSpan="2" Grid.Row="1" VerticalTextAlignment="End" FontSize="100" TextColor="#dee8f4" FontFamily="Arial" FontAttributes="Bold"></Label>
+                <Border HorizontalOptions="Start" Grid.Column="1" Grid.Row="1" VerticalOptions="End" StrokeShape="RoundRectangle 40,40,40,40" BackgroundColor ="#80262626" WidthRequest="69" HeightRequest="25" StrokeThickness="0" >
+                    <Label Padding="10,0" TextColor="#dee8f4" VerticalTextAlignment="Center">
+
+                        <Label.FormattedText      HorizontalTextAlignment="Start">
+                            <FormattedString >
+                                <Span  TextColor="#dee8f4" Text= "{x:Static helpers:IconFont.umbrella }" FontFamily="MOON" FontSize="16"   FontAttributes="Bold"/>
+                                <Span  TextColor="#dee8f4" Text= "   2%" FontFamily="Arial" FontSize="13"   FontAttributes="Bold"/>
+
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Border>
+                <Border HorizontalOptions="Start" Grid.Column="1" Grid.Row="2" VerticalOptions="Center" StrokeShape="RoundRectangle 40,40,40,40" BackgroundColor ="#80262626" WidthRequest="69" HeightRequest="28" StrokeThickness="0">
+                    <Label Padding="10,0" TextColor="#dee8f4" VerticalTextAlignment="Center">
+
+                        <Label.FormattedText      HorizontalTextAlignment="Start">
+                            <FormattedString >
+                                <Span  TextColor="#dee8f4" Text= "{x:Static helpers:IconFont.man }" FontFamily="MOON" FontSize="16"   FontAttributes="Bold"/>
+                                <Span  TextColor="#dee8f4" Text= "   12&#186;" FontFamily="Arial" FontSize="13"   FontAttributes="Bold"/>
+
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+
+                </Border>
+                <Label Grid.Row="3" Padding="0,0" FontFamily="Arial" Text="Cloudy" VerticalTextAlignment="Start" FontSize="30" TextColor="#dee8f4" />
+
+                <Label Grid.Column="0" Grid.Row="4" Padding="0,20" TextColor="#dee8f4" VerticalTextAlignment="End">
+
+                    <Label.FormattedText      HorizontalTextAlignment="Start">
+                        <FormattedString >
+                            <Span  TextColor="#dee8f4" Text= "{x:Static helpers:IconFont.arrowup }" FontFamily="MOON" FontSize="16"   FontAttributes="Bold"/>
+                            <Span  TextColor="#dee8f4" Text= " 15&#186;C" FontFamily="Arial" FontSize="16"   FontAttributes="None"/>
+
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label Grid.Column="0" Grid.Row="4" Padding="80,20" TextColor="#dee8f4" VerticalTextAlignment="End">
+
+                    <Label.FormattedText      HorizontalTextAlignment="Start">
+                        <FormattedString >
+                            <Span  TextColor="#dee8f4" Text= "{x:Static helpers:IconFont.arrowdown}" FontFamily="MOON" FontSize="16"   FontAttributes="Bold"/>
+                            <Span  TextColor="#dee8f4" Text= " 4&#186;C" FontFamily="Arial" FontSize="16"   FontAttributes="None"/>
+
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                
+            </Grid>
+            <Grid RowDefinitions="20,auto">
+                <Border  Grid.Row="1" StrokeShape="RoundRectangle 20,20,20,20" HeightRequest="200" WidthRequest="370" Padding="10,30" BackgroundColor="#30dee8f4" StrokeThickness="0">
+
+                    <Grid RowDefinitions="50,auto" ColumnSpacing="15" >
+                        <Label Padding="15,0" Text="HOURLY FORECAST" Grid.Row="0" TextColor="#c7e1ff" ></Label>
+                        <CollectionView ItemsSource="{Binding Weathers}"  ItemsLayout="HorizontalList"   Grid.Row="1" Grid.RowSpan="2">
+
+                            <CollectionView.ItemTemplate >
+
+                                <DataTemplate x:DataType="model:Weather">
+
+                                    <HorizontalStackLayout >
+                                        <Grid RowDefinitions="*,auto,auto" Padding="15,0">
+                                            <Label HorizontalTextAlignment="Center" TextColor="#dee8f4" Text="{Binding Degree}" Grid.Row="2" FontSize="10" ></Label>
+                                            <Label HorizontalTextAlignment="Start" TextColor="#dee8f4" Text="{Binding Symbol}" Grid.Row="1" FontSize="30" FontFamily="MOON"></Label>
+                                            <Label HorizontalTextAlignment="Center" TextColor="#dee8f4"  Text="{Binding Hour}" Grid.Row="0" FontSize="10" ></Label>
+                                        </Grid>
+
+
+                                    </HorizontalStackLayout>
+
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                    </Grid>
+                </Border>
+            </Grid>
+            <Grid RowDefinitions="20,auto">
+                        <Border  Grid.Row="1" StrokeShape="RoundRectangle 20,20,20,20" HeightRequest="550" WidthRequest="370" Padding="10,30" BackgroundColor="#30dee8f4" StrokeThickness="0">
+
+                        <Grid RowDefinitions="50,50,160,180,auto" ColumnSpacing="15" >
+                        <Label Text="DAILY FORECAST" Padding="15,0" Grid.Row="0" TextColor="#c7e1ff" ></Label>
+                        <CollectionView ItemsSource="{Binding Weathersday}"  ItemsLayout="HorizontalList"  VerticalOptions="Start" Grid.Row="1" >
+
+                            <CollectionView.ItemTemplate >
+
+                                <DataTemplate x:DataType="model:Weather">
+
+                                    <HorizontalStackLayout >
+                                        <Grid RowDefinitions="20,auto,auto" ColumnDefinitions="30,10" Padding="20,0">
+                                            <Label VerticalTextAlignment="Start" HorizontalTextAlignment="Center" TextColor="#dee8f4" Text="{Binding Degrees}" Grid.Column="0" Grid.Row="2" FontSize="10" ></Label>
+                                            <Label VerticalTextAlignment="Start" HorizontalTextAlignment="Start" TextColor="#dee8f4" Text="&#186;" Grid.Column="1" Padding="-8,0"  Grid.Row="2" FontSize="10" ></Label>
+                                            <Label VerticalTextAlignment="Start" HorizontalTextAlignment="Center" TextColor="#dee8f4" Text="{Binding Symbol}" Grid.Column="0" Grid.Row="1" FontSize="30" FontFamily="MOON"></Label>
+                                            <Label HorizontalTextAlignment="Start" TextColor="#dee8f4"  Text="{Binding Day}" Grid.Column="0" Grid.Row="0" FontSize="10" ></Label>
+                                            <Label HorizontalTextAlignment="Start" TextColor="#dee8f4"  Text="June" Grid.Column="1" Grid.Row="0" FontSize="10" Padding="-15,0" ></Label>
+                                        </Grid>
+
+
+                                    </HorizontalStackLayout>
+
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <Label Padding="13,25"  Text="MAX" TextColor="#c7e1ff" Grid.Row="2"></Label>
+
+                        <Label Padding="13,40"  Text="MIN" TextColor="#c7e1ff" Grid.Row="3"></Label>
+                        <cv:LineChart Grid.Row="3"
+                                      
+				        x:Name="secondlineChart"
+				        Margin="5,0,5,0"
+				        AxisLinesColor="#00dee8f4"
+				        AxisLinesFontSize="11"
+				        AxisLinesStrokeSize="0.9"
+				        ChartMargin="20"
+				        ChartStyle="Curve"
+				        DisplayHeaderValues="False"
+				        DisplayHorizontalAxisLines="False"
+				        DisplayValueLabelsOnTop="False"
+				        DisplayVerticalAxisLines="False"
+				        EnableEntryAnimations="False"
+                        
+				        Entries="{Binding Source={RelativeSource AncestorType={x:Type  vm:MainViewModel}}, Path=secondChartCollection}"
+				        ExpandAndFillBackgroundCurvePath="True"
+				        FontSize="15"
+				        FooterLabelsMargin="8"
+				        FooterLabelsTextSize="13"
+                        FooterLabelsFontColor="#dee8f4"
+				        HeaderValuesMargin="20"
+				        HeightRequest="180"
+				        HorizontalOptions="FillAndExpand"
+				        IsCurveBackgroundFilled="True"
+				        IsLabelTextTruncationEnabled="True"
+				        ItemSeparationMargin="8"
+				        PathsColorOpacity="0.65"
+				        PointSize="3"
+				        ReanimateOnPropertyChanged="True"
+				        ShowPointsForCurveStyle="False"
+				        StrokeSize="4"
+                        StrokeColor="Red"
+				        VerticalOptions="Start">
+                            <cv:LineChart.Background>
+                                <LinearGradientBrush EndPoint="0,1">
+                                    <GradientStop
+							        Offset="0.1"
+							        Color="#20dee8f4" />
+                                    <GradientStop
+							        Offset="1.0"
+							        Color="#30808080" />
+                                </LinearGradientBrush>
+                            </cv:LineChart.Background>
+                        </cv:LineChart>
+                        <cv:LineChart Grid.Row="2"
+				        x:Name="lineChart"
+				        Margin="5,0,5,0"
+				        AxisLinesColor="#00dee8f4"
+				        AxisLinesFontSize="11"
+				        AxisLinesStrokeSize="0.9"
+				        ChartMargin="20"
+				        ChartStyle="Curve"
+				        DisplayHeaderValues="False"
+				        DisplayHorizontalAxisLines="False"
+				        DisplayValueLabelsOnTop="False"
+				        DisplayVerticalAxisLines="False"
+				        EnableEntryAnimations="False"
+                        
+				        Entries="{Binding Source={RelativeSource AncestorType={x:Type  vm:MainViewModel}}, Path=ChartCollection}"
+				        ExpandAndFillBackgroundCurvePath="True"
+				        FontSize="15"
+				        FooterLabelsMargin="8"
+				        FooterLabelsTextSize="13"
+                        FooterLabelsFontColor="#dee8f4"
+				        HeaderValuesMargin="20"
+				        HeightRequest="180"
+				        HorizontalOptions="FillAndExpand"
+				        IsCurveBackgroundFilled="True"
+				        IsLabelTextTruncationEnabled="True"
+				        ItemSeparationMargin="8"
+				        PathsColorOpacity="0.65"
+				        PointSize="3"
+				        ReanimateOnPropertyChanged="True"
+				        ShowPointsForCurveStyle="False"
+				        StrokeSize="4"
+                        StrokeColor="Red"
+				        VerticalOptions="Start">
+                            <cv:LineChart.Background>
+                                <LinearGradientBrush
+						            EndPoint="0,1">
+                                    <GradientStop
+							        Offset="0.1"
+							        Color="#20dee8f4" />
+                                    <GradientStop
+							        Offset="1.0"
+							        Color="#30808080" />
+                                </LinearGradientBrush>
+                            </cv:LineChart.Background>
+                        </cv:LineChart>
+
+                        <Border  Grid.Row="4" VerticalOptions="End" StrokeShape="RoundRectangle 40,40,40,40" BackgroundColor ="#00dee8f4" WidthRequest="160" HeightRequest="38" StrokeThickness="1" HorizontalOptions="Center">
+                            <Label Padding="10,0" TextColor="#dee8f4" Text= "15-DAY FORECAST" FontFamily="Arial" FontSize="13"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
+
+                                </Border>
+
+                        </Grid>
+                        </Border>
+            </Grid>
+            <Grid RowDefinitions="20,auto">
+                <Border  Grid.Row="1" StrokeShape="RoundRectangle 20,20,20,20" HeightRequest="270" WidthRequest="370" Padding="10,30" BackgroundColor="#30dee8f4" StrokeThickness="0">
+                    <Grid RowDefinitions="80,100,20,180,auto"  >
+                        <Label Text="SUNRISE AND SUNSET" Padding="15,0" Grid.Row="0" Grid.Column="0" TextColor="#c7e1ff" ></Label>
+                        <Grid Grid.Row="1"  Grid.Column="0"  VerticalOptions="End" Scale="1.7">
+
+                            <progressBar:SfCircularProgressBar x:Name="DeterminateCircularProgressBar"
+                                                           Progress="75"
+                                                               StartAngle="180"
+                                                               EndAngle="360"
+                                                               ProgressFill="#FFCC33"
+                                                               TrackFill="#30dee8f4"
+                                                               />
+
+                        </Grid>
+                        <Grid Grid.Row="2" ColumnDefinitions="70,180,50">
+                            <Label Text="6:41" Grid.Column="1"   TextColor="#dee8f4"></Label>
+                            <Label Text="19:52" Grid.Column="2"   TextColor="#dee8f4"></Label>
+
+                        </Grid>
+                    </Grid>
+
+                </Border>
+            </Grid>
+            <Grid RowDefinitions="20,auto">
+                <Border  Grid.Row="1" StrokeShape="RoundRectangle 20,20,20,20" HeightRequest="300" WidthRequest="370" Padding="10,30" BackgroundColor="#30dee8f4" StrokeThickness="0">
+                    <Grid RowDefinitions="35,auto"  >
+
+                        <Label Text="DETAILS" Padding="15,0" Grid.Row="0" Grid.Column="0" TextColor="#c7e1ff" ></Label>
+                        <Grid Grid.Row="1" Padding="15,0" RowDefinitions="auto,50,auto,50,auto,70"  ColumnDefinitions="180,auto">
+                            <Label Text="Precipitation" TextColor="#60dee8f4"  Grid.Row="0" Grid.Column="0"></Label>
+                            <Label Text="0.00 mm" TextColor="#dee8f4" FontSize="17" Grid.Row="1" Grid.Column="0"></Label>
+                            <Label Text="East wind" TextColor="#60dee8f4"  Grid.Row="0" Grid.Column="1"></Label>
+                            <Label Text="11.0 km/h" TextColor="#dee8f4" FontSize="17" Grid.Row="1" Grid.Column="1"></Label>
+                            <Label Text="HUM" TextColor="#60dee8f4"  Grid.Row="2" Grid.Column="0"></Label>
+                            <Label Text="56.0 %" TextColor="#dee8f4" FontSize="17" Grid.Row="3" Grid.Column="0"></Label>
+                            <Label Text="Visibility" TextColor="#60dee8f4"  Grid.Row="2" Grid.Column="1"></Label>
+                            <Label Text="8.05 km" TextColor="#dee8f4" FontSize="17" Grid.Row="3" Grid.Column="1"></Label>
+                            <Label Text="UV" TextColor="#60dee8f4"  Grid.Row="4" Grid.Column="0"></Label>
+                            <Label Text="Low" TextColor="#dee8f4" FontSize="17" Grid.Row="5" Grid.Column="0"></Label>
+                            <Label Text="Pressure" TextColor="#60dee8f4"  Grid.Row="4" Grid.Column="1"></Label>
+                            <Label Text="1023 hPa" TextColor="#dee8f4" FontSize="17" Grid.Row="5" Grid.Column="1"></Label>
+                        </Grid>
+
+                    </Grid>
+                </Border>
+            </Grid>
+
+        </VerticalStackLayout>
+        
+
+
+    </ScrollView>
+
+</ContentPage>
