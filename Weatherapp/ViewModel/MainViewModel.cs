@@ -2,6 +2,8 @@
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Kotlin.Properties;
+using Org.Apache.Http.Protocol;
 using System.Collections.ObjectModel;
 using Weatherapp.Models;
 using Weatherapp.Models.WeatherModels;
@@ -29,7 +31,12 @@ public partial class MainViewModel : BaseViewModel
 
     private CancellationTokenSource _cancelTokenSource;
     private bool _isCheckingLocation;
-
+    ObservableProperty _chartCollection;
+    public ObservableProperty ChartCollection
+    {
+        get => _chartCollection;
+        set => _chartCollection = value;
+    }
 
 
     private readonly IHttpService _httpService;
@@ -68,6 +75,7 @@ public partial class MainViewModel : BaseViewModel
                 Weather = new WeatherModel();
             }
             Functie();
+            Functie2();
         }
         catch (FeatureNotSupportedException fnsEx)
         {
@@ -342,26 +350,30 @@ public partial class MainViewModel : BaseViewModel
             }
 
         };
-        Console.Write("###");
         
-        Console.Write(Weather.Forecast.Forecastday[0].Day.MaxtempC);
-        ObservableCollection<ChartItem> _chartCollection = new ObservableCollection<ChartItem>()
+        
+
+    }
+    void Functie2()
+    {
+        const int val1 = 20, val2 = 21, val3 = 45;
+
+        ChartCollection
         {
-            {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[0].Day.MaxtempC, Label = "12°", IsLabelBold = false}},
-            {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[1].Day.MaxtempC, Label = "14°"} },
-            {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[2].Day.MaxtempC, Label = "16°"} },
-            {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[3].Day.MaxtempC, Label = "14°"} },
-            {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[4].Day.MaxtempC, Label = "16°"} },
-            {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[5].Day.MaxtempC, Label = "16°"}},
-            {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[6].Day.MaxtempC, Label = "17°"} },
+            {new ChartItem(){ Value= 12, Label = "12°", IsLabelBold = false}},
+            {new ChartItem(){ Value= 14, Label = "14°"} },
+            {new ChartItem(){ Value= 15, Label = "16°"} },
+            {new ChartItem(){ Value= 19, Label = "14°"} },
+            {new ChartItem(){ Value= 17, Label = "16°"} },
+            {new ChartItem(){ Value= 15, Label = "16°"}},
+            {new ChartItem(){ Value= 13, Label = "17°"} },
         };
+        Console.WriteLine("$#"+ChartCollection[1].Value);
     }
 
 
 
- 
-        public ObservableCollection<ChartItem> ChartCollection { get; set; } = new ObservableCollection<ChartItem>();
-        ObservableCollection<ChartItem> _secondchartCollection = new ObservableCollection<ChartItem>()
+    ObservableCollection<ChartItem> _secondchartCollection = new ObservableCollection<ChartItem>()
         {
                 {new ChartItem(){ Value= 3, Label = "3°", IsLabelBold = false}},
                 {new ChartItem(){ Value= 4, Label = "4°"} },
