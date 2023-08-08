@@ -2,9 +2,9 @@
 
 public class Weather
 {
-    private string degree;
+    private double degree;
 
-    public string Degree
+    public double Degree
     {
         get
         {
