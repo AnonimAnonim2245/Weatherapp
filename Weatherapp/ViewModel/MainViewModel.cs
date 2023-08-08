@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Kotlin.Jvm.Functions;
 using System.Collections.ObjectModel;
 using Weatherapp.Models;
 using Weatherapp.Models.WeatherModels;
@@ -14,9 +15,9 @@ public partial class MainViewModel : BaseViewModel
     
 
     [ObservableProperty]
-    List<Weather> weathers;
+    List<Weatherul> weathers;
     [ObservableProperty]
-    List<Weather> weathersday;
+    List<Weatherul> weathersday;
 
     string apiKey = "a42ff4f6d3d44df0ace113329230108&q=Bucharest";
 
@@ -30,16 +31,18 @@ public partial class MainViewModel : BaseViewModel
     private CancellationTokenSource _cancelTokenSource;
     private bool _isCheckingLocation;
 
+
+
     private readonly IHttpService _httpService;
-    public MainViewModel()
+    public MainViewModel(IHttpService httpService)
     {
         Title = "Weather";
-
+        _httpService = httpService;
         AirQList = new ObservableCollection<string>();
         GetInitalDataCommand.Execute(null);
     }
     [RelayCommand]
-    private async void GetInitalData(IHttpService httpService)
+    private async void GetInitalData()
     {
         IsBusy = true;
         try
@@ -54,7 +57,7 @@ public partial class MainViewModel : BaseViewModel
 
             if (location != null)
             {
-                Weather = await httpService.GetData(new WeatherModel(), $"https://api.weatherapi.com/v1/forecast.json?key={apiKey}&q={location.Latitude},{location.Longitude}&days=7&aqi=yes&alerts=no");
+                Weather = await _httpService.GetData(new WeatherModel(), $"https://api.weatherapi.com/v1/forecast.json?key={apiKey}&q={location.Latitude},{location.Longitude}&days=7&aqi=yes&alerts=no");
 
                 foreach (KeyValuePair<string, double> pair in Weather.Current.AirQuality)
                 {
@@ -65,6 +68,7 @@ public partial class MainViewModel : BaseViewModel
             {
                 Weather = new WeatherModel();
             }
+            Functie();
         }
         catch (FeatureNotSupportedException fnsEx)
         {
@@ -85,235 +89,299 @@ public partial class MainViewModel : BaseViewModel
         IsBusy = false;
 
     }
-    public MainViewModel(IHttpService httpService)
-    {
-        Console.WriteLine("#hfhf");
+   
+    void Functie()
+     {
+        Console.WriteLine(Weather.Forecast.Forecastday[0].Hour[0].Time);
 
 
-        Weathers = new List<Weather>
+        Weathers = new List<Weatherul>
         {
-            new Weather
+            new Weatherul
             {
-                Hour= Weather.Forecast.Forecastday[1].Hour[1].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[1].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[1].Condition.Icon
+                Hour= Weather.Forecast.Forecastday[0].Hour[0].Time[^5..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[0].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[0].Condition.Icon
             },
-            new Weather
+            new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[2].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[2].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[2].Condition.Icon
-
-
-            },
-             new Weather
-            {
-                Hour=Weather.Forecast.Forecastday[1].Hour[3].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[3].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[3].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[1].Time[^5..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[1].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[1].Condition.Icon
 
 
             },
-             new Weather
+             new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[4].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[4].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[4].Condition.Icon
-
-
-            }, new Weather
-            {
-                Hour=Weather.Forecast.Forecastday[1].Hour[5].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[5].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[5].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[2].Time[^5..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[2].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[2].Condition.Icon
 
 
             },
-              new Weather
+             new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[6].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[6].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[6].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[3].Time[^5..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[3].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[3].Condition.Icon
 
 
-            }, new Weather
+            }, new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[7].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[7].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[7].Condition.Icon
-
-
-            }, new Weather
-            {
-                Hour=Weather.Forecast.Forecastday[1].Hour[8].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[8].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[8].Condition.Icon
-
-
-            }, new Weather
-            {
-                Hour=Weather.Forecast.Forecastday[1].Hour[9].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[9].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[9].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[4].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[4].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[4].Condition.Icon
 
 
             },
-               new Weather
+              new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[10].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[10].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[10].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[5].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[5].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[5].Condition.Icon
 
 
-            }, new Weather
+            }, new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[11].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[11].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[11].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[6].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[6].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[6].Condition.Icon
 
 
-            }, new Weather
+            }, new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[12].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[12].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[12].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[7].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[7].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[7].Condition.Icon
 
 
-            }, new Weather
+            }, new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[13].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[13].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[13].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[8].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[8].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[8].Condition.Icon
 
 
             },
-                new Weather
+               new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[14].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[14].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[14].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[9].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[9].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[9].Condition.Icon
 
 
-            }, new Weather
+            }, new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[15].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[15].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[15].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[10].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[10].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[10].Condition.Icon
 
 
-            }, new Weather
+            }, new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[16].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[16].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[16].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[11].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[11].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[11].Condition.Icon
+
+
+            }, new Weatherul
+            {
+                Hour=Weather.Forecast.Forecastday[0].Hour[12].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[12].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[12].Condition.Icon
 
 
             },
-                 new Weather
+                new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[17].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[17].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[17].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[13].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[13].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[13].Condition.Icon
 
 
-            }, new Weather
+            }, new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[18].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[18].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[18].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[14].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[14].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[14].Condition.Icon
 
 
-            }, new Weather
+            }, new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[19].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[19].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[19].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[15].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[15].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[15].Condition.Icon
 
 
-            }, new Weather
+            }, new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[20].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[20].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[20].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[16].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[16].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[16].Condition.Icon
 
 
-            }, new Weather
+            }, new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[21].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[21].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[21].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[17].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[17].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[17].Condition.Icon
 
 
-            }, new Weather
+            }, new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[22].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[22].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[22].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[18].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[18].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[18].Condition.Icon
 
 
-            }, new Weather
+            }, new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[23].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[23].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[23].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[19].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[19].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[19].Condition.Icon
 
 
-            }, new Weather
+            }, new Weatherul
             {
-                Hour=Weather.Forecast.Forecastday[1].Hour[24].Time,
-                Degree = Weather.Forecast.Forecastday[1].Hour[24].TempC,
-                Symbol = Weather.Forecast.Forecastday[1].Hour[24].Condition.Icon
+                Hour=Weather.Forecast.Forecastday[0].Hour[20].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[20].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[20].Condition.Icon
+
+
+            }, new Weatherul
+            {
+                Hour=Weather.Forecast.Forecastday[0].Hour[21].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[21].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[21].Condition.Icon
+
+
+            }, new Weatherul
+            {
+                Hour=Weather.Forecast.Forecastday[0].Hour[22].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[22].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[22].Condition.Icon
+
+
+            }, new Weatherul
+            {
+                Hour=Weather.Forecast.Forecastday[0].Hour[23].Time[^ 5 ..],
+                Degree = Weather.Forecast.Forecastday[0].Hour[23].TempC,
+                Symbol = Weather.Forecast.Forecastday[0].Hour[23].Condition.Icon
 
 
             }
         };
-    }
-    ObservableCollection<ChartItem> _chartCollection = new ObservableCollection<ChartItem>()
+        Weathersday = new List<Weatherul>
         {
-            {new ChartItem(){ Value= 12, Label = "12°", IsLabelBold = false}},
-            {new ChartItem(){ Value= 14, Label = "14°"} },
-            {new ChartItem(){ Value= 16, Label = "16°"} },
-            {new ChartItem(){ Value= 14, Label = "14°"} },
-            {new ChartItem(){ Value= 16, Label = "16°"} },
-            {new ChartItem(){ Value= 16, Label = "16°"}},
-            {new ChartItem(){ Value= 17, Label = "17°"} },
-            {new ChartItem(){ Value= 15, Label = "15°"} },
-            {new ChartItem(){ Value= 14, Label = "14°"} },
-            {new ChartItem(){ Value= 16, Label = "16°"} },
-            {new ChartItem(){ Value= 15, Label = "15°"} },
-            {new ChartItem(){ Value= 14, Label = "14°"} }
+            new Weatherul
+            {
+                Day = Weather.Forecast.Forecastday[0].Date[^2 ..] ,
+                Degree_max = Weather.Forecast.Forecastday[0].Day.MaxtempC,
+                Symbol = Weather.Forecast.Forecastday[0].Day.Condition.Icon,
+                Weather_cond = Weather.Forecast.Forecastday[0].Day.Condition.Text,
+                Degree_min = Weather.Forecast.Forecastday[0].Day.MintempC
+            },
+            new Weatherul
+            {
+                Day = Weather.Forecast.Forecastday[1].Date[^2..] ,
+                Degree_max = Weather.Forecast.Forecastday[1].Day.MaxtempC,
+                Symbol = Weather.Forecast.Forecastday[1].Day.Condition.Icon,
+                Weather_cond = Weather.Forecast.Forecastday[1].Day.Condition.Text,
+                Degree_min = Weather.Forecast.Forecastday[1].Day.MintempC
+
+
+            },
+             new Weatherul
+            {
+                Day = Weather.Forecast.Forecastday[2].Date[^ 2 ..] ,
+                Degree_max = Weather.Forecast.Forecastday[2].Day.MaxtempC,
+                Symbol = Weather.Forecast.Forecastday[2].Day.Condition.Icon,
+                Weather_cond = Weather.Forecast.Forecastday[2].Day.Condition.Text,
+                Degree_min = Weather.Forecast.Forecastday[2].Day.MintempC
+
+
+            },
+             new Weatherul
+            {
+                 Day = Weather.Forecast.Forecastday[3].Date[^ 2 ..] ,
+                Degree_max = Weather.Forecast.Forecastday[3].Day.MaxtempC,
+                Symbol = Weather.Forecast.Forecastday[3].Day.Condition.Icon,
+                Weather_cond = Weather.Forecast.Forecastday[3].Day.Condition.Text,
+                Degree_min = Weather.Forecast.Forecastday[3].Day.MintempC
+
+
+            }, new Weatherul
+            {
+
+                Day = Weather.Forecast.Forecastday[4].Date[^ 2 ..],
+                Degree_max = Weather.Forecast.Forecastday[4].Day.MaxtempC,
+                Symbol = Weather.Forecast.Forecastday[4].Day.Condition.Icon,
+                Weather_cond = Weather.Forecast.Forecastday[4].Day.Condition.Text,
+                Degree_min = Weather.Forecast.Forecastday[4].Day.MintempC
+
+
+            },
+              new Weatherul
+            {
+
+                Day = Weather.Forecast.Forecastday[5].Date[^ 2 ..] ,
+                Degree_max = Weather.Forecast.Forecastday[5].Day.MaxtempC,
+                Symbol = Weather.Forecast.Forecastday[5].Day.Condition.Icon,
+                Weather_cond = Weather.Forecast.Forecastday[5].Day.Condition.Text,
+                Degree_min = Weather.Forecast.Forecastday[5].Day.MintempC
+
+
+            }, new Weatherul
+            {
+               Day = Weather.Forecast.Forecastday[6].Date[^ 2 ..] ,
+                Degree_max = Weather.Forecast.Forecastday[6].Day.MaxtempC,
+                Symbol = Weather.Forecast.Forecastday[6].Day.Condition.Icon,
+                Weather_cond = Weather.Forecast.Forecastday[6].Day.Condition.Text,
+                Degree_min = Weather.Forecast.Forecastday[6].Day.MintempC
+
+
+            }
+
+        };
+        ObservableCollection<ChartItem> _chartCollection = new ObservableCollection<ChartItem>()
+        {
+            {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[0].Day.MaxtempC, Label = "12°", IsLabelBold = false}},
+            {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[1].Day.MaxtempC, Label = "14°"} },
+            {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[2].Day.MaxtempC, Label = "16°"} },
+            {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[3].Day.MaxtempC, Label = "14°"} },
+            {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[4].Day.MaxtempC, Label = "16°"} },
+            {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[5].Day.MaxtempC, Label = "16°"}},
+            {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[6].Day.MaxtempC, Label = "17°"} },
+
         };
 
-
-    public ObservableCollection<ChartItem> ChartCollection
-    {
-        get => _chartCollection;
-        set => _chartCollection = value;
     }
-    ObservableCollection<ChartItem> _secondchartCollection = new ObservableCollection<ChartItem>()
-    {
-            {new ChartItem(){ Value= 3, Label = "3°", IsLabelBold = false}},
-            {new ChartItem(){ Value= 4, Label = "4°"} },
-            {new ChartItem(){ Value= 4, Label = "4°"} },
-            {new ChartItem(){ Value= 5, Label = "5°"} },
-            {new ChartItem(){ Value= 4, Label = "4°"} },
-            {new ChartItem(){ Value= 3, Label = "3°"}},
-            {new ChartItem(){ Value= 6, Label = "6°"} },
-            {new ChartItem(){ Value= 4, Label = "4°"} },
-            {new ChartItem(){ Value= 2, Label = "2°"} },
-            {new ChartItem(){ Value= 4, Label = "4°"} },
-            {new ChartItem(){ Value= 7, Label = "7°"} },
-            {new ChartItem(){ Value= 5, Label = "5°"} }
-    };
 
 
-    public ObservableCollection<ChartItem> secondChartCollection
-    {
-        get => _secondchartCollection;
-        set => _secondchartCollection = value;
-    }
-    
-   
+
+ 
+        public ObservableCollection<ChartItem> ChartCollection { get; set; } = new ObservableCollection<ChartItem>();
+        ObservableCollection<ChartItem> _secondchartCollection = new ObservableCollection<ChartItem>()
+        {
+                {new ChartItem(){ Value= 3, Label = "3°", IsLabelBold = false}},
+                {new ChartItem(){ Value= 4, Label = "4°"} },
+                {new ChartItem(){ Value= 4, Label = "4°"} },
+                {new ChartItem(){ Value= 5, Label = "5°"} },
+                {new ChartItem(){ Value= 4, Label = "4°"} },
+                {new ChartItem(){ Value= 3, Label = "3°"}},
+                {new ChartItem(){ Value= 6, Label = "6°"} },
+                {new ChartItem(){ Value= 4, Label = "4°"} },
+                {new ChartItem(){ Value= 2, Label = "2°"} },
+                {new ChartItem(){ Value= 4, Label = "4°"} },
+                {new ChartItem(){ Value= 7, Label = "7°"} },
+                {new ChartItem(){ Value= 5, Label = "5°"} }
+        };
+        public ObservableCollection<ChartItem> secondChartCollection
+        {
+            get => _secondchartCollection;
+            set => _secondchartCollection = value;
+        }
 
 
 }
+
