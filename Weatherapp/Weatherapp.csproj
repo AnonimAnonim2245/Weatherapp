@@ -49,6 +49,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="ViewModel\NewFolder\**" />
+	  <Compile Remove="ViewModel\NewFolder\**" />
+	  <EmbeddedResource Remove="ViewModel\NewFolder\**" />
+	  <MauiCss Remove="ViewModel\NewFolder\**" />
+	  <MauiXaml Remove="ViewModel\NewFolder\**" />
+	  <None Remove="ViewModel\NewFolder\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Resources\Fonts\Aloha.ttf" />
 	  <None Remove="Resources\Fonts\icomoon.ttf" />
 	</ItemGroup>
@@ -61,10 +70,6 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="22.2.7" />
 		<PackageReference Include="Syncfusion.Maui.ProgressBar" Version="22.2.7" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="ViewModel\NewFolder\" />
 	</ItemGroup>
 
 </Project>

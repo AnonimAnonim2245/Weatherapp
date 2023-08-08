@@ -198,7 +198,7 @@
 				        DisplayVerticalAxisLines="False"
 				        EnableEntryAnimations="False"
                         
-				        Entries="{Binding Source={RelativeSource AncestorType={x:Type  vm:MainViewModel}}, Path=ChartCollection}"
+				        Entries="{Binding Source={RelativeSource AncestorType={x:Type  vm:MainViewModel}}, Path=ChartCollection, Mode=TwoWay}"
 				        ExpandAndFillBackgroundCurvePath="True"
 				        FontSize="15"
 				        FooterLabelsMargin="8"

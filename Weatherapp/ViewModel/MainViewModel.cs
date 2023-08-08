@@ -26,15 +26,13 @@ public partial class MainViewModel : BaseViewModel
     [ObservableProperty]
     ObservableCollection<string> airQList;
 
+    [ObservableProperty]
+    ObservableCollection<ChartItem> chartCollection;
+
 
     private CancellationTokenSource _cancelTokenSource;
     private bool _isCheckingLocation;
-    ObservableCollection<ChartItem> _chartCollection = new ObservableCollection<ChartItem>();
-    public ObservableCollection<ChartItem> ChartCollection
-    {
-        get => _chartCollection;
-        set => _chartCollection = value;
-    }
+    
 
 
     private readonly IHttpService _httpService;
@@ -43,6 +41,8 @@ public partial class MainViewModel : BaseViewModel
         Title = "Weather";
         _httpService = httpService;
         AirQList = new ObservableCollection<string>();
+        ChartCollection = new ObservableCollection<ChartItem>();
+
         GetInitalDataCommand.Execute(null);
     }
     [RelayCommand]
