@@ -2,7 +2,6 @@
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Kotlin.Jvm.Functions;
 using System.Collections.ObjectModel;
 using Weatherapp.Models;
 using Weatherapp.Models.WeatherModels;
@@ -343,6 +342,9 @@ public partial class MainViewModel : BaseViewModel
             }
 
         };
+        Console.Write("###");
+        
+        Console.Write(Weather.Forecast.Forecastday[0].Day.MaxtempC);
         ObservableCollection<ChartItem> _chartCollection = new ObservableCollection<ChartItem>()
         {
             {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[0].Day.MaxtempC, Label = "12°", IsLabelBold = false}},
@@ -352,9 +354,7 @@ public partial class MainViewModel : BaseViewModel
             {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[4].Day.MaxtempC, Label = "16°"} },
             {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[5].Day.MaxtempC, Label = "16°"}},
             {new ChartItem(){ Value= (float)Weather.Forecast.Forecastday[6].Day.MaxtempC, Label = "17°"} },
-
         };
-
     }
 
 
