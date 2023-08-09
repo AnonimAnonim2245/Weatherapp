@@ -1,5 +1,7 @@
 ﻿using Android.App;
+using Android.OS;
 using Android.Runtime;
+using Android.Views;
 
 namespace Weatherapp;
 
@@ -12,4 +14,6 @@ public class MainApplication : MauiApplication
 	}
 
 	protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+
+    
 }

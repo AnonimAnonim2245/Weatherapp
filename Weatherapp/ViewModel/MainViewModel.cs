@@ -1,14 +1,15 @@
 ﻿using AlohaKit.Models;
+using CommunityToolkit.Maui.Core.Platform;
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
 using Weatherapp.Models;
 using Weatherapp.Models.WeatherModels;
 using Weatherapp.Services;
 
 namespace Weatherapp.ViewModel;
-
 public partial class MainViewModel : BaseViewModel
 {
     
@@ -26,6 +27,7 @@ public partial class MainViewModel : BaseViewModel
     [ObservableProperty]
     bool testElement;
 
+
     [ObservableProperty]
     ObservableCollection<string> airQList;
 
@@ -37,10 +39,47 @@ public partial class MainViewModel : BaseViewModel
 
     private CancellationTokenSource _cancelTokenSource;
     private bool _isCheckingLocation;
-    
+
+    [ObservableProperty]
+    int time_start;
+    [ObservableProperty]
+    int time_current;
+    [ObservableProperty]
+    int time_end;
+
+    [ObservableProperty]
+    Color culoare;
+
+    [ObservableProperty]
+    string text_timp;
+
+    [ObservableProperty]
+    int percentage;
+
+    [ObservableProperty]
+    Color culoare_background;
+
+    [ObservableProperty]
+    string time_a;
+
+    [ObservableProperty]
+    string time_b;
+
+    [ObservableProperty]
+    string time_c;
+
+    [ObservableProperty]
+    int ok2;
+
+    [ObservableProperty]
+    string direction_wind;
+
+    [ObservableProperty]
+    string uv;
 
 
     private readonly IHttpService _httpService;
+    
     public MainViewModel(IHttpService httpService)
     {
         Title = "Weather";
@@ -374,7 +413,171 @@ public partial class MainViewModel : BaseViewModel
             SecondChartCollection.Add(new ChartItem() { Value = Convert.ToInt16(days.Day.MintempC), Label = $"{Convert.ToInt16(days.Day.MintempC)}°", IsLabelBold = false });
 
         }
+        Time_c = Weather.Location.Localtime[^5..];
+        Culoare_background = Color.FromRgb(40, 120, 255);
+        Culoare = Color.FromRgb(255, 204, 51);
+        Text_timp = "SUNRISE & SUNSET";
+        if (Weather.Forecast.Forecastday[0].Astro.IsMoonUp == 0)
+        {
+            Culoare = Color.FromRgb(255, 250, 250);
+            Culoare_background = Color.FromRgb(0, 0, 139);
+            Text_timp = "MOONRISE & MOONSET";
+            Time_a = Weather.Forecast.Forecastday[0].Astro.Moonrise;
+            Time_b = Weather.Forecast.Forecastday[0].Astro.Moonset;
+            string a, b;
+            a = Time_a;
+            b = "No moonrise";
+            Boolean result = a.Contains(b);
+
+            if(result==true)
+            {
+                Percentage = 0;
+                Ok2 = 0;
+            }
+            else
+            {
+                Ok2 = 1;
+            }
+
+            
+
+        }
+        else
+        {
+            
+            Time_a = Weather.Forecast.Forecastday[0].Astro.Sunrise;
+            Time_b = Weather.Forecast.Forecastday[0].Astro.Sunset;
+            Console.WriteLine("$$$" + Time_b);
+            
+            string a, b;
+            a = Time_a;
+            b = "No sunrise";
+            Boolean result = a.Contains(b);
+
+            if (result == true)
+            {
+                Percentage = 0;
+                Ok2= 0; 
+            }
+            else
+            {
+                Ok2 = 1;
+            }
+
+
+        }
+
+        if(Ok2==1)
+        {
+            
+
+            Time_start = (10 * ((int)(Time_a[0])-48) + ((int)(Time_a[1])-48)) % 12;
+            Time_end = (10 * ((int)(Time_b[0])-48) + ((int)(Time_b[1])-48)) % 12;
+            Boolean result2 = Time_a.Contains('P');
+            Boolean result3 = Time_b.Contains('P');
+
+            if (result2 == true)
+            {
+                Time_start += 12;
+            }
+            if (result3 == true)
+            {
+                Time_end += 12;
+            }
+
+            Console.WriteLine("RHHR" + Time_end);
+
+            Time_start = Time_start * 60 + (((int)(Time_a[3])-48)*10 + ((int)(Time_a[4])-48));
+            Time_end = Time_end * 60 + (((int)(Time_b[3])-48)*10 + ((int)(Time_b[4])-48));
+
+            if (Time_start > Time_end)
+                Time_end += (24 * 60);
+            Console.WriteLine("RHHRy" + Time_start);
+            Console.WriteLine("RHHRh" + Time_end);
+            Console.WriteLine("RHHRh" + Time_c[0]);
+            Console.WriteLine("RHHRh" + Time_c[1]);
+
+            int a, b, c, d;
+            a = (int)(Time_c[0]) - 48;
+            b = (int)(Time_c[1]) - 48;
+            c = (int)(Time_c[3]) - 48;
+            d = (int)(Time_c[4]) - 48; 
+            Time_current = (a * 10 + b); 
+            Console.WriteLine("RHHRt" + Time_current);
+            Time_current = Time_current *60 + (((int)(Time_c[3])-48) * 10 + ((int)(Time_c[4])-48));
+            Console.WriteLine("RHHRt" + Time_b);
+
+            Percentage = ((Time_current-Time_start)*100)/(Time_end - Time_start);
+
+            if((Time_current - Time_start) > (Time_end - Time_start))
+            {
+                Culoare = Color.FromRgb(255, 250, 250);
+                Culoare_background = Color.FromRgb(0, 0, 139);
+                Text_timp = "MOONRISE & MOONSET";
+                Time_a = Weather.Forecast.Forecastday[0].Astro.Moonrise;
+                Time_b = Weather.Forecast.Forecastday[0].Astro.Moonset;
+                Percentage = 0;
+                
+            }
+            Console.WriteLine("RHHR gfhhf" + Percentage);
+
+
+
+
+
+
+        }
+
+        if (Weather.Current.WindDegree >= 315 || Weather.Current.WindDegree <= 45)
+        {
+
+            Direction_wind = "North";
+
+            if (Weather.Current.WindDegree == 315)
+                Direction_wind += "-West";
+            else if (Weather.Current.WindDegree == 45)
+                Direction_wind += "-East";
+        }
+        else if (Weather.Current.WindDegree > 45 && Weather.Current.WindDegree < 135)
+        {
+            Direction_wind = "East";
+        }
+        else if(Weather.Current.WindDegree >=135 && Weather.Current.WindDegree<=225)
+        {
+            Direction_wind = "North";
+
+            if (Weather.Current.WindDegree == 315)
+                Direction_wind += "-West";
+            else if (Weather.Current.WindDegree == 45)
+                Direction_wind += "-East";
+        }
+        else if(Weather.Current.WindDegree > 225 && Weather.Current.WindDegree < 315)
+        {
+            Direction_wind = "West";
+
+        }
+
+        if (Weather.Current.Uv >= 1 && Weather.Current.Uv <= 2)
+            Uv = "Low";
+        else if (Weather.Current.Uv >= 3 && Weather.Current.Uv <= 5)
+            Uv = "Moderate";
+        else if (Weather.Current.Uv >= 6 && Weather.Current.Uv <= 7)
+            Uv = "High";
+        else if (Weather.Current.Uv >= 8 && Weather.Current.Uv <= 10)
+            Uv = "Very High";
+        else if (Weather.Current.Uv >= 11)
+            Uv = "Extreme";
+
+
+        Console.WriteLine("###" + Weather.Forecast.Forecastday[0].Astro.IsMoonUp);
+        Console.WriteLine("###" + Weather.Forecast.Forecastday[0].Astro.Sunrise);
+        Console.WriteLine("###" + Weather.Forecast.Forecastday[0].Astro.Sunset);
+
     }
+
+  
+    
+
 
 
 

@@ -11,9 +11,9 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:Weatherapp.ViewModel"
              xmlns:progressBar="clr-namespace:Syncfusion.Maui.ProgressBar;assembly=Syncfusion.Maui.ProgressBar"
-             BackgroundColor="#2878ff">
+             BackgroundColor="{Binding Culoare_background}">
     <Page.Behaviors>
-        <mct:StatusBarBehavior StatusBarColor="#2878ff"/>
+        <mct:StatusBarBehavior StatusBarColor="Blue"/>
     </Page.Behaviors>
 
     <ContentPage.Resources>
@@ -113,7 +113,7 @@
                 </Border>
             </Grid>
             <Grid RowDefinitions="20,auto">
-                <Border  Grid.Row="1" StrokeShape="RoundRectangle 20,20,20,20" HeightRequest="550" WidthRequest="370" Padding="10,30" BackgroundColor="#30dee8f4" StrokeThickness="0">
+                <Border  Grid.Row="1" StrokeShape="RoundRectangle 20,20,20,20" HeightRequest="580" WidthRequest="370" Padding="10,30" BackgroundColor="#30dee8f4" StrokeThickness="0">
 
                     <Grid RowDefinitions="50,80,160,180,auto" ColumnSpacing="40" >
                         <Label Text="DAILY FORECAST" Padding="15,0" Grid.Row="0" TextColor="#c7e1ff" ></Label>
@@ -154,7 +154,7 @@
 				        DisplayVerticalAxisLines="{Binding TestElement}"
 				        EnableEntryAnimations="False"
                         
-				        Entries="{Binding secondChartCollection, Mode=TwoWay}"
+				        Entries="{Binding SecondChartCollection, Mode=TwoWay}"
 				        ExpandAndFillBackgroundCurvePath="True"
 				        FontSize="15"
 				        FooterLabelsMargin="8"
@@ -241,21 +241,21 @@
             <Grid RowDefinitions="20,auto">
                 <Border  Grid.Row="1" StrokeShape="RoundRectangle 20,20,20,20" HeightRequest="270" WidthRequest="370" Padding="10,30" BackgroundColor="#30dee8f4" StrokeThickness="0">
                     <Grid RowDefinitions="80,100,20,180,auto"  >
-                        <Label Text="SUNRISE AND SUNSET" Padding="15,0" Grid.Row="0" Grid.Column="0" TextColor="#c7e1ff" ></Label>
+                        <Label Text="{Binding Text_timp}" Padding="15,0" Grid.Row="0" Grid.Column="0" TextColor="#c7e1ff" ></Label>
                         <Grid Grid.Row="1"  Grid.Column="0"  VerticalOptions="End" Scale="1.7">
 
                             <progressBar:SfCircularProgressBar x:Name="DeterminateCircularProgressBar"
-                                                           Progress="75"
+                                                           Progress="{Binding Percentage}"
                                                                StartAngle="180"
                                                                EndAngle="360"
-                                                               ProgressFill="#FFCC33"
+                                                               ProgressFill="{Binding Culoare}"
                                                                TrackFill="#30dee8f4"
                                                                />
 
                         </Grid>
-                        <Grid Grid.Row="2" ColumnDefinitions="70,180,50">
-                            <Label Text="6:41" Grid.Column="1"   TextColor="#dee8f4"></Label>
-                            <Label Text="19:52" Grid.Column="2"   TextColor="#dee8f4"></Label>
+                        <Grid Grid.Row="2" ColumnDefinitions="70,180,180">
+                            <Label Text="{Binding Time_a}" Grid.Column="1"   TextColor="#dee8f4"></Label>
+                            <Label Text="{Binding Time_b}" Grid.Column="2"   TextColor="#dee8f4"></Label>
 
                         </Grid>
                     </Grid>
@@ -269,17 +269,17 @@
                         <Label Text="DETAILS" Padding="15,0" Grid.Row="0" Grid.Column="0" TextColor="#c7e1ff" ></Label>
                         <Grid Grid.Row="1" Padding="15,0" RowDefinitions="auto,50,auto,50,auto,70"  ColumnDefinitions="180,auto">
                             <Label Text="Precipitation" TextColor="#60dee8f4"  Grid.Row="0" Grid.Column="0"></Label>
-                            <Label Text="0.00 mm" TextColor="#dee8f4" FontSize="17" Grid.Row="1" Grid.Column="0"></Label>
-                            <Label Text="East wind" TextColor="#60dee8f4"  Grid.Row="0" Grid.Column="1"></Label>
-                            <Label Text="11.0 km/h" TextColor="#dee8f4" FontSize="17" Grid.Row="1" Grid.Column="1"></Label>
+                            <Label Text="{Binding Weather.Forecast.Forecastday[0].Day.TotalprecipMm,StringFormat='{0} mm'}" TextColor="#dee8f4" FontSize="17" Grid.Row="1" Grid.Column="0"></Label>
+                            <Label Text="{Binding Direction_wind,StringFormat='{0} wind'}" TextColor="#60dee8f4"  Grid.Row="0" Grid.Column="1"></Label>
+                            <Label Text="{Binding Weather.Current.WindKph, StringFormat='{0} km/h'}" TextColor="#dee8f4" FontSize="17" Grid.Row="1" Grid.Column="1"></Label>
                             <Label Text="HUM" TextColor="#60dee8f4"  Grid.Row="2" Grid.Column="0"></Label>
-                            <Label Text="56.0 %" TextColor="#dee8f4" FontSize="17" Grid.Row="3" Grid.Column="0"></Label>
+                            <Label Text="{Binding Weather.Current.Humidity, StringFormat='{0} %'}" TextColor="#dee8f4" FontSize="17" Grid.Row="3" Grid.Column="0"></Label>
                             <Label Text="Visibility" TextColor="#60dee8f4"  Grid.Row="2" Grid.Column="1"></Label>
-                            <Label Text="8.05 km" TextColor="#dee8f4" FontSize="17" Grid.Row="3" Grid.Column="1"></Label>
+                            <Label Text="{Binding Weather.Current.VisKm, StringFormat='{0} km'}" TextColor="#dee8f4" FontSize="17" Grid.Row="3" Grid.Column="1"></Label>
                             <Label Text="UV" TextColor="#60dee8f4"  Grid.Row="4" Grid.Column="0"></Label>
-                            <Label Text="Low" TextColor="#dee8f4" FontSize="17" Grid.Row="5" Grid.Column="0"></Label>
+                            <Label Text="{Binding Uv, StringFormat='{0}'}" TextColor="#dee8f4" FontSize="17" Grid.Row="5" Grid.Column="0"></Label>
                             <Label Text="Pressure" TextColor="#60dee8f4"  Grid.Row="4" Grid.Column="1"></Label>
-                            <Label Text="1023 hPa" TextColor="#dee8f4" FontSize="17" Grid.Row="5" Grid.Column="1"></Label>
+                            <Label Text="{Binding Weather.Current.PressureMb, StringFormat='{0} hPa'} " TextColor="#dee8f4" FontSize="17" Grid.Row="5" Grid.Column="1"></Label>
                         </Grid>
 
                     </Grid>

@@ -30,4 +30,43 @@ public class Current
 
     [JsonProperty("air_quality")]
     public Dictionary<string,double> AirQuality { get; set; }
+
+    [JsonProperty("wind_mph")]
+    public double WindMph { get; set; }
+
+    [JsonProperty("wind_kph")]
+    public double WindKph { get; set; }
+
+    [JsonProperty("wind_degree")]
+    public int WindDegree { get; set; }
+
+    [JsonProperty("wind_dir")]
+    public string WindDir { get; set; }
+
+    [JsonProperty("pressure_mb")]
+    public double PressureMb { get; set; }
+
+    [JsonProperty("pressure_in")]
+    public double PressureIn { get; set; }
+
+    [JsonProperty("precip_mm")]
+    public double PrecipMm { get; set; }
+
+    [JsonProperty("precip_in")]
+    public double PrecipIn { get; set; } 
+
+    [JsonProperty("vis_km")]
+    public double VisKm { get; set; }
+
+    [JsonProperty("vis_miles")]
+    public double VisMiles { get; set; }
+
+    [JsonProperty("uv")]
+    public double Uv { get; set; }
+
+    [JsonProperty("gust_mph")]
+    public double GustMph { get; set; }
+
+    [JsonProperty("gust_kph")]
+    public double GustKph { get; set; }
 }

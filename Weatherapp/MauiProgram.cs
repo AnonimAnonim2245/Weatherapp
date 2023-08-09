@@ -3,6 +3,7 @@ using Weatherapp.ViewModel;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Core.Hosting;
 using Weatherapp.Services;
+using CommunityToolkit.Maui;
 
 namespace Weatherapp;
 
@@ -14,7 +15,9 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .ConfigureSyncfusionCore()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
+
             {
                 fonts.AddFont("Aloha.ttf", "Aloha");
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
