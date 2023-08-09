@@ -19,7 +19,7 @@ public partial class MainViewModel : BaseViewModel
     [ObservableProperty]
     List<Weatherul> weathersday;
 
-    string apiKey = "a42ff4f6d3d44df0ace113329230108&q=Bucharest";
+    string apiKey = "a42ff4f6d3d44df0ace113329230108&q=Constanța";
 
     [ObservableProperty]
     WeatherModel weather;
