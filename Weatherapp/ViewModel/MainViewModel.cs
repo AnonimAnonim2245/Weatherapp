@@ -24,11 +24,16 @@ public partial class MainViewModel : BaseViewModel
     WeatherModel weather;
 
     [ObservableProperty]
+    bool testElement;
+
+    [ObservableProperty]
     ObservableCollection<string> airQList;
 
     [ObservableProperty]
     ObservableCollection<ChartItem> chartCollection;
 
+    [ObservableProperty]
+    ObservableCollection<ChartItem> secondChartCollection;
 
     private CancellationTokenSource _cancelTokenSource;
     private bool _isCheckingLocation;
@@ -42,6 +47,7 @@ public partial class MainViewModel : BaseViewModel
         _httpService = httpService;
         AirQList = new ObservableCollection<string>();
         ChartCollection = new ObservableCollection<ChartItem>();
+        SecondChartCollection = new ObservableCollection<ChartItem>();
 
         GetInitalDataCommand.Execute(null);
     }
@@ -354,43 +360,22 @@ public partial class MainViewModel : BaseViewModel
     }
     void Functie2()
     {
-        const int val1 = 20, val2 = 21, val3 = 45;
-
-        ChartCollection = new ObservableCollection<ChartItem>()
+        TestElement = true;
+        TestElement = false;
+        foreach (var days in Weather.Forecast.Forecastday)
         {
-           {new ChartItem(){ Value= (int)(Weather.Forecast.Forecastday[0].Day.MaxtempC), Label = "12°", IsLabelBold = false}},
-            {new ChartItem(){ Value= (int)(Weather.Forecast.Forecastday[1].Day.MaxtempC), Label = "14°"} },
-            {new ChartItem(){ Value= (int)Weather.Forecast.Forecastday[2].Day.MaxtempC, Label = "16°"} },
-            {new ChartItem(){ Value= (int)Weather.Forecast.Forecastday[3].Day.MaxtempC, Label = "14°"} },
-            {new ChartItem(){ Value= (int)Weather.Forecast.Forecastday[4].Day.MaxtempC, Label = "16°"} },
-            {new ChartItem(){ Value= (int)Weather.Forecast.Forecastday[5].Day.MaxtempC, Label = "16°"}},
-            {new ChartItem(){ Value= (int)Weather.Forecast.Forecastday[6].Day.MaxtempC, Label = "17°"} },
-        };
-        Console.WriteLine("$#"+ChartCollection[1].Value);
+            ChartCollection.Add(new ChartItem() { Value = Convert.ToInt16(days.Day.MaxtempC), Label = $"{Convert.ToInt16(days.Day.MaxtempC)}°", IsLabelBold = false });
+
+        }
+        TestElement = true;
+        TestElement = false;
+        foreach (var days in Weather.Forecast.Forecastday)
+        {
+            SecondChartCollection.Add(new ChartItem() { Value = Convert.ToInt16(days.Day.MintempC), Label = $"{Convert.ToInt16(days.Day.MintempC)}°", IsLabelBold = false });
+
+        }
     }
 
-
-
-    ObservableCollection<ChartItem> _secondchartCollection = new ObservableCollection<ChartItem>()
-        {
-                {new ChartItem(){ Value= 3, Label = "3°", IsLabelBold = false}},
-                {new ChartItem(){ Value= 4, Label = "4°"} },
-                {new ChartItem(){ Value= 4, Label = "4°"} },
-                {new ChartItem(){ Value= 5, Label = "5°"} },
-                {new ChartItem(){ Value= 4, Label = "4°"} },
-                {new ChartItem(){ Value= 3, Label = "3°"}},
-                {new ChartItem(){ Value= 6, Label = "6°"} },
-                {new ChartItem(){ Value= 4, Label = "4°"} },
-                {new ChartItem(){ Value= 2, Label = "2°"} },
-                {new ChartItem(){ Value= 4, Label = "4°"} },
-                {new ChartItem(){ Value= 7, Label = "7°"} },
-                {new ChartItem(){ Value= 5, Label = "5°"} }
-        };
-        public ObservableCollection<ChartItem> secondChartCollection
-        {
-            get => _secondchartCollection;
-            set => _secondchartCollection = value;
-        }
 
 
 }
