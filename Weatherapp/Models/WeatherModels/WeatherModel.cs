@@ -5,7 +5,7 @@ namespace Weatherapp.Models.WeatherModels;
 public class WeatherModel
 {
     [JsonProperty("location")]
-    public Location Location { get; set; }
+    public Locationo Locationo { get; set; }
 
     [JsonProperty("current")]
     public Current Current { get; set; }

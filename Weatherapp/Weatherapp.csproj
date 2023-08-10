@@ -68,6 +68,7 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="7.0.92" />
+		<PackageReference Include="Microsoft.Maui.Maps" Version="7.0.92" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Syncfusion.Maui.Charts" Version="22.2.7" />
 		<PackageReference Include="Syncfusion.Maui.ProgressBar" Version="22.2.7" />

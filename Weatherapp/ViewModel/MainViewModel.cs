@@ -7,11 +7,17 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
 using System.Collections.ObjectModel;
+using System.Net.NetworkInformation;
 using Weatherapp.Models;
 using Weatherapp.Models.WeatherModels;
 using Weatherapp.Services;
-
 namespace Weatherapp.ViewModel;
+
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Devices.Sensors;
+using Microsoft.Maui.Maps;
+using static Microsoft.Maui.ApplicationModel.Permissions;
+using Map = Microsoft.Maui.Controls.Maps.Map;
 public partial class MainViewModel : BaseViewModel
 {
     
@@ -79,6 +85,11 @@ public partial class MainViewModel : BaseViewModel
     [ObservableProperty]
     string uv;
 
+    [ObservableProperty]
+    List<Pin> pins = new List<Pin>();
+
+    [ObservableProperty]
+    MapSpan dist2;
 
     private readonly IHttpService _httpService;
     
@@ -96,6 +107,8 @@ public partial class MainViewModel : BaseViewModel
     private async void GetInitalData()
     {
         IsBusy = true;
+        Pin currentLocation = new Pin();
+
         try
         {
             _isCheckingLocation = true;
@@ -104,16 +117,21 @@ public partial class MainViewModel : BaseViewModel
 
             _cancelTokenSource = new CancellationTokenSource();
 
-            Microsoft.Maui.Devices.Sensors.Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
+            Location location = await Geolocation.Default.GetLocationAsync(request, _cancelTokenSource.Token);
 
             if (location != null)
             {
                 Weather = await _httpService.GetData(new WeatherModel(), $"https://api.weatherapi.com/v1/forecast.json?key={apiKey}&q={location.Latitude},{location.Longitude}&days=7&aqi=yes&alerts=no");
-
+                currentLocation.Location = new Location(Weather.Locationo.Lat, Weather.Locationo.Lon);
+                currentLocation.Label = "Sunt aici!";
+                currentLocation.Type = PinType.SearchResult;
                 foreach (KeyValuePair<string, double> pair in Weather.Current.AirQuality)
                 {
                     AirQList.Add($"{pair.Key.ToUpper()}\n{pair.Value:0.00}");
                 }
+
+               
+                IsBusy = false;
             }
             else
             {
@@ -138,14 +156,37 @@ public partial class MainViewModel : BaseViewModel
         {
             // Unable to get location
         }
-        IsBusy = false;
+
+        double a, b;
+        a=Weather.Locationo.Lat; 
+        b=Weather.Locationo.Lon;
+        
+
+        Pins = new List<Pin>
+                {
+                new Pin
+                {
+                    Location = new Location(a, b),
+                    Label = "I'm here",
+                    Address = Weather.Locationo.Name,
+                    Type = PinType.SearchResult
+                },
+                currentLocation
+                      
+                };
 
     }
-   
+    
+
     void Functie()
      {
         Console.WriteLine(Weather.Forecast.Forecastday[0].Hour[0].Time);
 
+        Distance dist = Distance.FromMiles(2);
+        Dist2 = MapSpan.FromCenterAndRadius(Pins[0].Location, dist);
+        Map Locatie = new Map();
+        MapSpan mapSpan = MapSpan.FromCenterAndRadius(Pins[0].Location, Distance.FromKilometers(3));
+        map.MoveToRegion(mapSpan);
 
         Weathers = new List<Weatherul>
         {
@@ -396,7 +437,8 @@ public partial class MainViewModel : BaseViewModel
 
         };
         
-        
+
+
 
     }
     void Functie2()
@@ -415,7 +457,7 @@ public partial class MainViewModel : BaseViewModel
             SecondChartCollection.Add(new ChartItem() { Value = Convert.ToInt16(days.Day.MintempC), Label = $"{Convert.ToInt16(days.Day.MintempC)}°", IsLabelBold = false });
 
         }
-        Time_c = Weather.Location.Localtime[^5..];
+        Time_c = Weather.Locationo.Localtime[^5..];
         Culoare_background = Color.FromRgb(40, 120, 255);
         Culoare = Color.FromRgb(255, 204, 51);
         Text_timp = "SUNRISE & SUNSET";

@@ -2,7 +2,7 @@
 
 namespace Weatherapp.Models.WeatherModels;
 
-public class Location
+public class Locationo
 {
     [JsonProperty("name")]
     public string Name { get; set; }
