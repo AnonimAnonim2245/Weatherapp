@@ -15,6 +15,7 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .ConfigureSyncfusionCore()
+            .UseMauiMaps()
             .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
 
@@ -24,6 +25,8 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddFont("icomoon.ttf", "MOON");
             });
+           
+
 
 #if DEBUG
         builder.Logging.AddDebug();

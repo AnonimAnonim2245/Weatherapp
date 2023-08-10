@@ -11,7 +11,8 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:Weatherapp.ViewModel"
              xmlns:progressBar="clr-namespace:Syncfusion.Maui.ProgressBar;assembly=Syncfusion.Maui.ProgressBar"
-             BackgroundColor="{Binding Culoare_background}">
+             BackgroundColor="{Binding Culoare_background}"
+             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps">
     <Page.Behaviors>
         <mct:StatusBarBehavior StatusBarColor="Blue"/>
     </Page.Behaviors>
@@ -38,7 +39,7 @@
                     <Label HorizontalTextAlignment="Start" Grid.Column="0" Grid.RowSpan="2" Grid.Row="0"  Text="{Binding Weather.Current.TempC,Converter={StaticResource DoubleToIntConverter},StringFormat='{0}&#186;'}" VerticalTextAlignment="End" FontSize="100" TextColor="#dee8f4" FontFamily="Arial" FontAttributes="Bold"></Label>
 
 
-                    <Border HorizontalOptions="End" Grid.Column="1" Grid.Row="0" VerticalOptions="Center" StrokeShape="RoundRectangle 40,40,40,40" BackgroundColor ="#80262626" WidthRequest="69" HeightRequest="25" StrokeThickness="0" >
+                    <Border  HorizontalOptions="End" Grid.Column="1" Grid.Row="0" VerticalOptions="Center" StrokeShape="RoundRectangle 40,40,40,40" BackgroundColor ="#80262626" WidthRequest="69" HeightRequest="25" StrokeThickness="0" >
                         <Label Padding="10,0" TextColor="#dee8f4" VerticalTextAlignment="Center">
 
                             <Label.FormattedText      HorizontalTextAlignment="Start">
@@ -64,7 +65,7 @@
 
                     </Border>
                 </Grid>
-                <Grid Grid.Row="2" RowDefinitions="40,50" ColumnDefinitions="80,auto" Padding="15,0">
+                <Grid Grid.Row="2" RowDefinitions="40,50" ColumnDefinitions="80,auto" Padding="20,0">
                     <Label Grid.Row="0" Padding="0,0" FontFamily="Arial" Text="Cloudy" VerticalTextAlignment="Start" FontSize="30" TextColor="#dee8f4" />
 
                 <Label Grid.Column="0" Grid.Row="1" Padding="0,0" TextColor="#dee8f4" VerticalTextAlignment="Start">
@@ -237,7 +238,7 @@
                         </cv:LineChart>
 
                         <Border  Grid.Row="4" VerticalOptions="End" StrokeShape="RoundRectangle 40,40,40,40" BackgroundColor ="#00dee8f4" WidthRequest="160" HeightRequest="38" StrokeThickness="1" HorizontalOptions="Center">
-                            <Label Padding="10,0" TextColor="#dee8f4" Text= "15-DAY FORECAST" FontFamily="Arial" FontSize="13"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
+                            <Label Padding="10,0" TextColor="#dee8f4" Text= "10-DAY FORECAST" FontFamily="Arial" FontSize="13"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
 
                         </Border>
 
@@ -291,6 +292,11 @@
                     </Grid>
                 </Border>
             </Grid>
+            <Grid>
+                <Map x:Name="map"/>
+            </Grid>
+
+
 
         </VerticalStackLayout>
         

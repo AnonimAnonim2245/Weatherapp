@@ -4,6 +4,8 @@ using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Maps;
+using Microsoft.Maui.Maps;
 using System.Collections.ObjectModel;
 using Weatherapp.Models;
 using Weatherapp.Models.WeatherModels;
@@ -469,10 +471,26 @@ public partial class MainViewModel : BaseViewModel
 
         if(Ok2==1)
         {
-            
 
-            Time_start = (10 * ((int)(Time_a[0])-48) + ((int)(Time_a[1])-48)) % 12;
-            Time_end = (10 * ((int)(Time_b[0])-48) + ((int)(Time_b[1])-48)) % 12;
+            char a1, b1;
+
+            if (Time_a[0] == ' ')
+            {
+                a1 = '0';
+            }
+            else
+                a1 = Time_a[0];
+
+            if (Time_b[0] == ' ')
+            {
+                b1 = '0';
+            }
+            else
+                b1 = Time_b[0];
+
+
+            Time_start = (10 * ((int)(a1)-48) + ((int)(Time_a[1])-48)) % 12;
+            Time_end = (10 * ((int)(b1)-48) + ((int)(Time_b[1])-48)) % 12;
             Boolean result2 = Time_a.Contains('P');
             Boolean result3 = Time_b.Contains('P');
 
@@ -498,18 +516,27 @@ public partial class MainViewModel : BaseViewModel
             Console.WriteLine("RHHRh" + Time_c[1]);
 
             int a, b, c, d;
-            a = (int)(Time_c[0]) - 48;
+            if (Time_c[0]==' ')
+                a = (int)(Time_c[0]) - 32;
+            else
+                a = (int)(Time_c[0]) - 48;
+
             b = (int)(Time_c[1]) - 48;
             c = (int)(Time_c[3]) - 48;
-            d = (int)(Time_c[4]) - 48; 
+            d = (int)(Time_c[4]) - 48;
+            Console.WriteLine("RHHR#" + a);
+            Console.WriteLine("RHHR#" + b);
+            Console.WriteLine("RHHR#" + c);
+            Console.WriteLine("RHHR#" + d);
+
             Time_current = (a * 10 + b); 
             Console.WriteLine("RHHRt" + Time_current);
-            Time_current = Time_current *60 + (((int)(Time_c[3])-48) * 10 + ((int)(Time_c[4])-48));
-            Console.WriteLine("RHHRt" + Time_b);
+            Time_current = Time_current *60 + (c * 10 + d);
+            Console.WriteLine("RHHRt" + Time_current);
 
             Percentage = ((Time_current-Time_start)*100)/(Time_end - Time_start);
 
-            if((Time_current - Time_start) > (Time_end - Time_start))
+            if((Time_current - Time_start) > (Time_end - Time_start) && Weather.Forecast.Forecastday[0].Astro.IsMoonUp == 1)
             {
                 Culoare = Color.FromRgb(255, 250, 250);
                 Culoare_background = Color.FromRgb(0, 0, 139);
@@ -574,9 +601,10 @@ public partial class MainViewModel : BaseViewModel
         Console.WriteLine("###" + Weather.Forecast.Forecastday[0].Astro.Sunset);
 
     }
+   
 
-  
-    
+
+
 
 
 
