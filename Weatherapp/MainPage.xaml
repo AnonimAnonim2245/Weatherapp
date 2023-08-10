@@ -292,7 +292,7 @@
                     </Grid>
                 </Border>
             </Grid>
-            <Grid>
+            <Grid xmlns:vm="clr-namespace:Weatherapp.ViewModel" x:DataType="vm:MainViewModel">
                 <Map x:Name="map"/>
             </Grid>
 
