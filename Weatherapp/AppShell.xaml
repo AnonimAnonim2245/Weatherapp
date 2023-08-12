@@ -3,11 +3,22 @@
     x:Class="Weatherapp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Weatherapp"
+    xmlns:local="clr-namespace:Weatherapp.Views"
     Shell.FlyoutBehavior="Disabled">
 
     <ShellContent
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Route="MainPage"
+        />
+    <ShellContent
+        ContentTemplate="{DataTemplate local:InfoPage}"
+        Route="InfoPage"
+        Shell.NavBarIsVisible="False"  
+/>
+    <ShellContent
+        ContentTemplate="{DataTemplate local:CitiesPage}"
+        Route="InfoPage"
+        Shell.NavBarIsVisible="False"  
+/>
 
 </Shell>

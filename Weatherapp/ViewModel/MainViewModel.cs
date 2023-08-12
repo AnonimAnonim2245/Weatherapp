@@ -16,21 +16,27 @@ namespace Weatherapp.ViewModel;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Devices.Sensors;
 using Microsoft.Maui.Maps;
+using Weatherapp.Views;
 using static Microsoft.Maui.ApplicationModel.Permissions;
 using Map = Microsoft.Maui.Controls.Maps.Map;
 public partial class MainViewModel : BaseViewModel
 {
-    
+
 
     [ObservableProperty]
     List<Weatherul> weathers;
     [ObservableProperty]
     List<Weatherul> weathersday;
 
+   
     string apiKey = "a42ff4f6d3d44df0ace113329230108&q=Constanța";
 
     [ObservableProperty]
     WeatherModel weather;
+
+    [ObservableProperty]
+    WeatherModel weather2;
+
 
     [ObservableProperty]
     bool testElement;
@@ -85,6 +91,13 @@ public partial class MainViewModel : BaseViewModel
     [ObservableProperty]
     string uv;
 
+
+    [ObservableProperty]
+    ToDoModel todo;
+
+    [ObservableProperty]
+    double degree_compass;
+
     [ObservableProperty]
     List<Pin> pins = new List<Pin>();
 
@@ -92,14 +105,19 @@ public partial class MainViewModel : BaseViewModel
     MapSpan dist2;
 
     private readonly IHttpService _httpService;
-    
+
+
     public MainViewModel(IHttpService httpService)
     {
+
         Title = "Weather";
+        todo = new ToDoModel();
+
         _httpService = httpService;
         AirQList = new ObservableCollection<string>();
         ChartCollection = new ObservableCollection<ChartItem>();
         SecondChartCollection = new ObservableCollection<ChartItem>();
+        Culoare_background = Todo.Culoare3;
 
         GetInitalDataCommand.Execute(null);
     }
@@ -111,6 +129,8 @@ public partial class MainViewModel : BaseViewModel
 
         try
         {
+            if (Todo.Ok == 2)
+                Console.Write("$RRRH");
             _isCheckingLocation = true;
 
             GeolocationRequest request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
@@ -122,6 +142,8 @@ public partial class MainViewModel : BaseViewModel
             if (location != null)
             {
                 Weather = await _httpService.GetData(new WeatherModel(), $"https://api.weatherapi.com/v1/forecast.json?key={apiKey}&q={location.Latitude},{location.Longitude}&days=7&aqi=yes&alerts=no");
+                Weather2 = await _httpService.GetData(new WeatherModel(), $"https://api.weatherapi.com/v1/forecast.json?key={apiKey}&q={location.Latitude},{location.Longitude}&days=10&aqi=yes&alerts=no");
+
                 currentLocation.Location = new Location(Weather.Locationo.Lat, Weather.Locationo.Lon);
                 currentLocation.Label = "Sunt aici!";
                 currentLocation.Type = PinType.SearchResult;
@@ -176,17 +198,14 @@ public partial class MainViewModel : BaseViewModel
                 };
 
     }
-    
+   
 
     void Functie()
      {
-        Console.WriteLine(Weather.Forecast.Forecastday[0].Hour[0].Time);
+        
+   
 
-        Distance dist = Distance.FromMiles(2);
-        Dist2 = MapSpan.FromCenterAndRadius(Pins[0].Location, dist);
-        Map Locatie = new Map();
-        MapSpan mapSpan = MapSpan.FromCenterAndRadius(Pins[0].Location, Distance.FromKilometers(3));
-        map.MoveToRegion(mapSpan);
+        
 
         Weathers = new List<Weatherul>
         {
@@ -436,13 +455,117 @@ public partial class MainViewModel : BaseViewModel
             }
 
         };
-        
+        Todo.Weather2 = new List<Weatherul>
+        {
+            new Weatherul
+            {
+                Day = Weather2.Forecast.Forecastday[0].Date[^2 ..] ,
+                Degree_max = Weather2.Forecast.Forecastday[0].Day.MaxtempC,
+                Symbol = Weather2.Forecast.Forecastday[0].Day.Condition.Icon,
+                Weather_cond = Weather2.Forecast.Forecastday[0].Day.Condition.Text,
+                Degree_min = Weather2.Forecast.Forecastday[0].Day.MintempC
+            },
+            new Weatherul
+            {
+                Day = Weather2.Forecast.Forecastday[1].Date[^2..] ,
+                Degree_max = Weather2.Forecast.Forecastday[1].Day.MaxtempC,
+                Symbol = Weather2.Forecast.Forecastday[1].Day.Condition.Icon,
+                Weather_cond = Weather2.Forecast.Forecastday[1].Day.Condition.Text,
+                Degree_min = Weather2.Forecast.Forecastday[1].Day.MintempC
+
+
+            },
+             new Weatherul
+            {
+                Day = Weather2.Forecast.Forecastday[2].Date[^ 2 ..] ,
+                Degree_max = Weather2.Forecast.Forecastday[2].Day.MaxtempC,
+                Symbol = Weather2.Forecast.Forecastday[2].Day.Condition.Icon,
+                Weather_cond = Weather2.Forecast.Forecastday[2].Day.Condition.Text,
+                Degree_min = Weather2.Forecast.Forecastday[2].Day.MintempC
+
+
+            },
+             new Weatherul
+            {
+                 Day = Weather2.Forecast.Forecastday[3].Date[^ 2 ..] ,
+                Degree_max = Weather2.Forecast.Forecastday[3].Day.MaxtempC,
+                Symbol = Weather2.Forecast.Forecastday[3].Day.Condition.Icon,
+                Weather_cond = Weather2.Forecast.Forecastday[3].Day.Condition.Text,
+                Degree_min = Weather2.Forecast.Forecastday[3].Day.MintempC
+
+
+            }, new Weatherul
+            {
+
+                Day = Weather2.Forecast.Forecastday[4].Date[^ 2 ..],
+                Degree_max = Weather2.Forecast.Forecastday[4].Day.MaxtempC,
+                Symbol = Weather2.Forecast.Forecastday[4].Day.Condition.Icon,
+                Weather_cond = Weather2.Forecast.Forecastday[4].Day.Condition.Text,
+                Degree_min = Weather2.Forecast.Forecastday[4].Day.MintempC
+
+
+            },
+              new Weatherul
+            {
+
+                Day = Weather2.Forecast.Forecastday[5].Date[^ 2 ..] ,
+                Degree_max = Weather2.Forecast.Forecastday[5].Day.MaxtempC,
+                Symbol = Weather2.Forecast.Forecastday[5].Day.Condition.Icon,
+                Weather_cond = Weather2.Forecast.Forecastday[5].Day.Condition.Text,
+                Degree_min = Weather2.Forecast.Forecastday[5].Day.MintempC
+
+
+            }, new Weatherul
+            {
+               Day = Weather2.Forecast.Forecastday[6].Date[^ 2 ..] ,
+                Degree_max = Weather2.Forecast.Forecastday[6].Day.MaxtempC,
+                Symbol = Weather2.Forecast.Forecastday[6].Day.Condition.Icon,
+                Weather_cond = Weather2.Forecast.Forecastday[6].Day.Condition.Text,
+                Degree_min = Weather2.Forecast.Forecastday[6].Day.MintempC
+
+
+            }, new Weatherul
+            {
+
+                Day = Weather2.Forecast.Forecastday[7].Date[^ 2 ..],
+                Degree_max = Weather2.Forecast.Forecastday[7].Day.MaxtempC,
+                Symbol = Weather2.Forecast.Forecastday[7].Day.Condition.Icon,
+                Weather_cond = Weather2.Forecast.Forecastday[7].Day.Condition.Text,
+                Degree_min = Weather2.Forecast.Forecastday[7].Day.MintempC
+
+
+            },
+              new Weatherul
+            {
+
+                Day = Weather2.Forecast.Forecastday[8].Date[^ 2 ..] ,
+                Degree_max = Weather2.Forecast.Forecastday[8].Day.MaxtempC,
+                Symbol = Weather2.Forecast.Forecastday[8].Day.Condition.Icon,
+                Weather_cond = Weather2.Forecast.Forecastday[8].Day.Condition.Text,
+                Degree_min = Weather2.Forecast.Forecastday[8].Day.MintempC
+
+
+            }, new Weatherul
+            {
+               Day = Weather2.Forecast.Forecastday[9].Date[^ 2 ..] ,
+                Degree_max = Weather2.Forecast.Forecastday[9].Day.MaxtempC,
+                Symbol = Weather2.Forecast.Forecastday[9].Day.Condition.Icon,
+                Weather_cond = Weather2.Forecast.Forecastday[9].Day.Condition.Text,
+                Degree_min = Weather2.Forecast.Forecastday[9].Day.MintempC
+
+
+            }
+
+        };
+
+
 
 
 
     }
     void Functie2()
     {
+        Degree_compass = Weather.Current.WindDegree;
         TestElement = true;
         TestElement = false;
         foreach (var days in Weather.Forecast.Forecastday)
@@ -450,6 +573,9 @@ public partial class MainViewModel : BaseViewModel
             ChartCollection.Add(new ChartItem() { Value = Convert.ToInt16(days.Day.MaxtempC), Label = $"{Convert.ToInt16(days.Day.MaxtempC)}°", IsLabelBold = false });
 
         }
+        
+
+       
         TestElement = true;
         TestElement = false;
         foreach (var days in Weather.Forecast.Forecastday)
@@ -461,8 +587,12 @@ public partial class MainViewModel : BaseViewModel
         Culoare_background = Color.FromRgb(40, 120, 255);
         Culoare = Color.FromRgb(255, 204, 51);
         Text_timp = "SUNRISE & SUNSET";
+        Todo.Culoare3 = Color.FromRgb(40, 120, 255);
+        Todo.Id = 3;
         if (Weather.Forecast.Forecastday[0].Astro.IsMoonUp == 0)
         {
+            Todo.Id = 2;
+            Todo.Culoare3 = Color.FromRgb(0, 0, 139);
             Culoare = Color.FromRgb(255, 250, 250);
             Culoare_background = Color.FromRgb(0, 0, 139);
             Text_timp = "MOONRISE & MOONSET";
@@ -486,7 +616,7 @@ public partial class MainViewModel : BaseViewModel
             
 
         }
-        else
+        else 
         {
             
             Time_a = Weather.Forecast.Forecastday[0].Astro.Sunrise;
@@ -578,9 +708,11 @@ public partial class MainViewModel : BaseViewModel
 
             Percentage = ((Time_current-Time_start)*100)/(Time_end - Time_start);
 
-            if((Time_current - Time_start) > (Time_end - Time_start) && Weather.Forecast.Forecastday[0].Astro.IsMoonUp == 1)
+            if((Time_current - Time_start) > (Time_end - Time_start) && Weather.Forecast.Forecastday[0].Astro.IsMoonUp == 1) 
             {
+                Todo.Ok = 2;
                 Culoare = Color.FromRgb(255, 250, 250);
+                Todo.Culoare3 = Culoare;
                 Culoare_background = Color.FromRgb(0, 0, 139);
                 Text_timp = "MOONRISE & MOONSET";
                 Time_a = Weather.Forecast.Forecastday[0].Astro.Moonrise;
@@ -590,7 +722,7 @@ public partial class MainViewModel : BaseViewModel
             }
             Console.WriteLine("RHHR gfhhf" + Percentage);
 
-
+           
 
 
 
@@ -643,7 +775,42 @@ public partial class MainViewModel : BaseViewModel
         Console.WriteLine("###" + Weather.Forecast.Forecastday[0].Astro.Sunset);
 
     }
+    [RelayCommand]
+
+    private async void GoToAddItem()
+    {
+        await Shell.Current.GoToAsync(nameof(InfoPage));
+    }
+    [RelayCommand]
+
+    private async void Forecast(ToDoModel todo)
+    {
+        var navigationParameters = new Dictionary<string, object>
+            {
+                { "Todo", Todo }
+            };
+        await Shell.Current.GoToAsync($"{nameof(ForecastPage)}", navigationParameters);
+              
+    }
    
+    [RelayCommand]
+    private async void Cities()
+    {
+        var navigationParameters = new Dictionary<string, object>
+            {
+                { "Todo", Todo }
+            };
+        await Shell.Current.GoToAsync($"{nameof(CitiesPage)}", navigationParameters);
+
+    }
+
+    [RelayCommand]
+    async Task Back()
+    {
+        await Shell.Current.GoToAsync("..");
+
+    }
+
 
 
 

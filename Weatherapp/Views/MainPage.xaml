@@ -5,7 +5,7 @@
              xmlns:model="clr-namespace:Weatherapp.Models"
              xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
              xmlns:cv="clr-namespace:AlohaKit.Controls;assembly=AlohaKit"
-             x:Class="Weatherapp.MainPage"
+             x:Class="Weatherapp.Views.MainPage"
              xmlns:sensors="clr-namespace:Microsoft.Maui.Devices.Sensors;assembly=Microsoft.Maui.Essentials"
              xmlns:helpers="clr-namespace:Weatherapp.Helpers"
              x:DataType="vm:MainViewModel"
@@ -13,7 +13,10 @@
              xmlns:vm="clr-namespace:Weatherapp.ViewModel"
              xmlns:progressBar="clr-namespace:Syncfusion.Maui.ProgressBar;assembly=Syncfusion.Maui.ProgressBar"
              BackgroundColor="{Binding Culoare_background}"
-             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps">
+             xmlns:gauge="clr-namespace:Syncfusion.Maui.Gauges;assembly=Syncfusion.Maui.Gauges"
+             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
+             >
+    
     <Page.Behaviors>
         <mct:StatusBarBehavior StatusBarColor="Blue"/>
     </Page.Behaviors>
@@ -29,8 +32,20 @@
         <VerticalStackLayout>
             <Grid RowDefinitions="*,auto" ColumnDefinitions="*,auto,auto" Padding="15,15" ColumnSpacing="20" >
                 <Label HorizontalTextAlignment="Start" Text="{Binding Weather.Locationo.Name}" Grid.Column="0" Grid.Row="0" VerticalTextAlignment="End" FontSize="30" TextColor="#dee8f4" FontFamily="Arial" FontAttributes="Bold"></Label>
-                <Label HorizontalTextAlignment="Start" Grid.Column="2" Grid.Row="0" Padding="5,5"  FontSize="20"  VerticalTextAlignment="End" TextColor="#dee8f4" Text="{x:Static helpers:IconFont.dots}" FontFamily="MOON" />
-                <Label HorizontalTextAlignment="Start" Grid.Column="1" Grid.Row="0"  Padding="5,5" FontSize="20"  VerticalTextAlignment="End" TextColor="#dee8f4" Text="{x:Static helpers:IconFont.city}" FontFamily="MOON" />
+                <Label HorizontalTextAlignment="Start" Grid.Column="2" Grid.Row="0" Padding="5,5"  FontSize="20"  VerticalTextAlignment="End" TextColor="#dee8f4" Text="{x:Static helpers:IconFont.dots}" FontFamily="MOON" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type  vm:MainViewModel}}, Path=OptionsCommand}"
+                                                              CommandParameter="{Binding .}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+
+
+                <Label  HorizontalTextAlignment="Start" Grid.Column="1" Grid.Row="0"  Padding="5,5" FontSize="20"  VerticalTextAlignment="End" TextColor="#dee8f4" Text="{x:Static helpers:IconFont.city}" FontFamily="MOON" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type  vm:MainViewModel}}, Path=CitiesCommand}"
+                                                              CommandParameter="{Binding .}"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label HorizontalTextAlignment="Start" Padding="0,0" Grid.Column="0" Grid.Row="1" FontSize="12"  Text= "{x:Static helpers:IconFont.location }"  FontFamily="MOON" VerticalTextAlignment="Start" TextColor="#dee8f4"/>
                 <Label HorizontalTextAlignment="Start" Padding="15,0" Grid.Column="0" Grid.Row="1" FontSize="12"  Text= "Just updated"  FontFamily="MOON" VerticalTextAlignment="Start" TextColor="#dee8f4"/>
             </Grid>
@@ -237,11 +252,14 @@
                                 </LinearGradientBrush>
                             </cv:LineChart.Background>
                         </cv:LineChart>
+                        <Button Grid.Row="4" HeightRequest ="38" VerticalOptions="End" CornerRadius="90" BackgroundColor ="#00dee8f4" 
+                    WidthRequest="160" TextColor="#dee8f4" BorderColor="#60dee8f4" BorderWidth="0.8" 
+                    Text= "10-DAY FORECAST" FontFamily="Arial" FontSize="13" 
+                     HorizontalOptions="Center"
+                    Command="{Binding ForecastCommand}">
 
-                        <Border  Grid.Row="4" VerticalOptions="End" StrokeShape="RoundRectangle 40,40,40,40" BackgroundColor ="#00dee8f4" WidthRequest="160" HeightRequest="38" StrokeThickness="1" HorizontalOptions="Center">
-                            <Label Padding="10,0" TextColor="#dee8f4" Text= "10-DAY FORECAST" FontFamily="Arial" FontSize="13"  VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
-
-                        </Border>
+                        </Button>
+                        
 
                     </Grid>
                 </Border>
@@ -270,48 +288,18 @@
 
                 </Border>
             </Grid>
-            <Grid RowDefinitions="20,auto">
-                <Border  Grid.Row="1" StrokeShape="RoundRectangle 20,20,20,20" HeightRequest="300" WidthRequest="370" Padding="10,30" BackgroundColor="#30dee8f4" StrokeThickness="0">
-                    <Grid RowDefinitions="35,auto"  >
+            <Grid RowDefinitions="30,auto,50">
 
-                        <Label Text="DETAILS" Padding="15,0" Grid.Row="0" Grid.Column="0" TextColor="#c7e1ff" ></Label>
-                        <Grid Grid.Row="1" Padding="15,0" RowDefinitions="auto,50,auto,50,auto,70"  ColumnDefinitions="180,auto">
-                            <Label Text="Precipitation" TextColor="#60dee8f4"  Grid.Row="0" Grid.Column="0"></Label>
-                            <Label Text="{Binding Weather.Forecast.Forecastday[0].Day.TotalprecipMm,StringFormat='{0} mm'}" TextColor="#dee8f4" FontSize="17" Grid.Row="1" Grid.Column="0"></Label>
-                            <Label Text="{Binding Direction_wind,StringFormat='{0} wind'}" TextColor="#60dee8f4"  Grid.Row="0" Grid.Column="1"></Label>
-                            <Label Text="{Binding Weather.Current.WindKph, StringFormat='{0} km/h'}" TextColor="#dee8f4" FontSize="17" Grid.Row="1" Grid.Column="1"></Label>
-                            <Label Text="HUM" TextColor="#60dee8f4"  Grid.Row="2" Grid.Column="0"></Label>
-                            <Label Text="{Binding Weather.Current.Humidity, StringFormat='{0} %'}" TextColor="#dee8f4" FontSize="17" Grid.Row="3" Grid.Column="0"></Label>
-                            <Label Text="Visibility" TextColor="#60dee8f4"  Grid.Row="2" Grid.Column="1"></Label>
-                            <Label Text="{Binding Weather.Current.VisKm, StringFormat='{0} km'}" TextColor="#dee8f4" FontSize="17" Grid.Row="3" Grid.Column="1"></Label>
-                            <Label Text="UV" TextColor="#60dee8f4"  Grid.Row="4" Grid.Column="0"></Label>
-                            <Label Text="{Binding Uv, StringFormat='{0}'}" TextColor="#dee8f4" FontSize="17" Grid.Row="5" Grid.Column="0"></Label>
-                            <Label Text="Pressure" TextColor="#60dee8f4"  Grid.Row="4" Grid.Column="1"></Label>
-                            <Label Text="{Binding Weather.Current.PressureMb, StringFormat='{0} hPa'} " TextColor="#dee8f4" FontSize="17" Grid.Row="5" Grid.Column="1"></Label>
-                        </Grid>
+                <Button Grid.Row="1" HeightRequest ="50" VerticalOptions="End" CornerRadius="90" BackgroundColor ="#30dee8f4" 
+                    WidthRequest="160" TextColor="#dee8f4" BorderColor="#30808080" BorderWidth="0.5" 
+                    Text= "More info" FontFamily="Arial" FontSize="13" 
+                     HorizontalOptions="Center"
+                    Command="{Binding GoToAddItemCommand}">
 
-                    </Grid>
-                </Border>
+                </Button>
             </Grid>
-            <Grid RowDefinitions="50,500">
-                <maps:Map Grid.Row="1"
-                      x:Name="map"
-                      MapType="Satellite"
-                      ItemsSource="{Binding Pins}"
-                      HeightRequest="200">
-                    
-                    <maps:Map.ItemTemplate>
-                        <DataTemplate x:DataType="maps:Pin">
-                            <maps:Pin Location="{Binding Location}"
-                                  Address="{Binding Address}"
-                                  Label="{Binding Label}"
-                                  />
-                        </DataTemplate>
+      
 
-                    </maps:Map.ItemTemplate>
-                    
-                </maps:Map>
-            </Grid>
 
 
 

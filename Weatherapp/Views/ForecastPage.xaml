@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Weatherapp.Views.ForecastPage"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+             xmlns:model="clr-namespace:Weatherapp.Models"
+             xmlns:chart="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             xmlns:cv="clr-namespace:AlohaKit.Controls;assembly=AlohaKit"
+             Title="ForecastPage"
+             xmlns:sensors="clr-namespace:Microsoft.Maui.Devices.Sensors;assembly=Microsoft.Maui.Essentials"
+             xmlns:helpers="clr-namespace:Weatherapp.Helpers"
+             x:DataType="vm:LineViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:Weatherapp.ViewModel"
+             xmlns:progressBar="clr-namespace:Syncfusion.Maui.ProgressBar;assembly=Syncfusion.Maui.ProgressBar"
+             BackgroundColor="{Binding Todo.Culoare3}"
+             xmlns:gauge="clr-namespace:Syncfusion.Maui.Gauges;assembly=Syncfusion.Maui.Gauges"
+             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
+             Shell.NavBarIsVisible="False"
+>
+    <Grid RowDefinitions="40,40,90,900">
+        <Label Text="10-DAY FORECAST" Grid.Row="1" TextColor="#dee8f4" FontAttributes="Bold" FontSize="30" VerticalTextAlignment="End" HorizontalTextAlignment="Center"></Label>
+        <Border Grid.Row="3" StrokeShape="RoundRectangle 20,20,20,20" HeightRequest="450"  VerticalOptions="Start" WidthRequest="370" Padding="10,30" BackgroundColor="#30dee8f4" StrokeThickness="0">
+
+            <Grid RowDefinitions="0,500"  >
+                <CollectionView ItemsSource="{Binding Todo.Weather2}"  ItemsLayout="HorizontalList"  VerticalOptions="Start" Grid.Row="1" >
+
+                    <CollectionView.ItemTemplate >
+
+                        <DataTemplate x:DataType="model:Weatherul">
+
+                            <HorizontalStackLayout >
+                                <Grid RowDefinitions="40,100,50,35,50,35,50"   Padding="40,0">
+                                    <Label VerticalTextAlignment="Start" HorizontalTextAlignment="Center" TextColor="#dee8f4" Text="{Binding Weather_cond}" Grid.Column="0" Grid.Row="2" FontSize="30" ></Label>
+                                    <Image VerticalOptions="Start" HorizontalOptions="Center" HeightRequest="90" Source="{Binding Symbol, StringFormat='https:{0}'}" Grid.Column="0" Grid.Row="1" ></Image>
+                                    <Label HorizontalTextAlignment="Center" TextColor="#dee8f4"  Text="{Binding Day,StringFormat='{0} Aug'}" Grid.Column="0" Grid.Row="0" FontSize="30" ></Label>
+                                    <Label HorizontalTextAlignment="Center" TextColor="#dee8f4"  Text="Min:" Grid.Column="0" Grid.Row="3" FontSize="30" ></Label>
+                                    <Label HorizontalTextAlignment="Center" TextColor="#dee8f4"  Text="{Binding Degree_min,StringFormat='{0}&#186;C'}" Grid.Column="0" Grid.Row="4" FontSize="30" ></Label>
+                                    <Label HorizontalTextAlignment="Center" TextColor="#dee8f4"  Text="Max:" Grid.Column="0" Grid.Row="5" FontSize="30" ></Label>
+                                    <Label HorizontalTextAlignment="Center" TextColor="#dee8f4"  Text="{Binding Degree_max, StringFormat='{0}&#186;C'}" Grid.Column="0" Grid.Row="6" FontSize="30" ></Label>
+
+                                </Grid>
+
+    
+                            </HorizontalStackLayout>
+
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Border>
+       </Grid>
+
+</ContentPage>
