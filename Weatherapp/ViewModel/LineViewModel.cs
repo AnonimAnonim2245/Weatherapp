@@ -79,8 +79,27 @@ namespace Weatherapp.ViewModel
             _httpService2 = httpService;
             AirQList2 = new ObservableCollection<string>();
             GetInitalDataCommand.Execute(null);
+           
+            
         }
+        static Color ParseCustomColor(string colorString)
+        {
+            string[] colorComponents = colorString.Split(',');
 
+            if (colorComponents.Length == 3)
+            {
+                int red, green, blue;
+
+                if (int.TryParse(colorComponents[0], out red) &&
+                    int.TryParse(colorComponents[1], out green) &&
+                    int.TryParse(colorComponents[2], out blue))
+                {
+                    return Color.FromRgb(red, green, blue);
+                }
+            }
+
+            throw new FormatException("Invalid color string format.");
+        }
         [RelayCommand]
         private async void GetInitalData()
         {
@@ -263,6 +282,9 @@ namespace Weatherapp.ViewModel
         {
             Todo = query["Todo"] as ToDoModel;
             OnPropertyChanged("Todo");
+
+            Console.WriteLine(Todo.Culoare3);
+            Culoare_background2 = ParseCustomColor(Todo.Culoare3);
         }
 
         #region INotifyPropertyChanged

@@ -5,8 +5,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Maps;
-using System.Drawing;
 using Microsoft.Maui.Maps;
+using System.Windows;
+using Microsoft.Maui.Graphics;
+
 using System.Collections.ObjectModel;
 using System.Net.NetworkInformation;
 using Weatherapp.Models;
@@ -14,10 +16,10 @@ using Weatherapp.Models.WeatherModels;
 using Weatherapp.Services;
 namespace Weatherapp.ViewModel;
 
+using CommunityToolkit.Maui.Core.Extensions;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Devices.Sensors;
 using Microsoft.Maui.Maps;
-using System.Drawing;
 using Weatherapp.Views;
 using static Microsoft.Maui.ApplicationModel.Permissions;
 using Map = Microsoft.Maui.Controls.Maps.Map;
@@ -121,7 +123,10 @@ public partial class MainViewModel : BaseViewModel
         AirQList = new ObservableCollection<string>();
         ChartCollection = new ObservableCollection<ChartItem>();
         SecondChartCollection = new ObservableCollection<ChartItem>();
-        Culoare_background = ColorTranslator.FromHtml(Todo.Culoare3);
+        
+        
+
+
 
         GetInitalDataCommand.Execute(null);
     }
@@ -588,17 +593,17 @@ public partial class MainViewModel : BaseViewModel
 
         }
         Time_c = Weather.Locationo.Localtime[^5..];
-        Culoare_background = Color.FromArgb(40, 120, 255);
-        Culoare = Color.FromArgb(255, 204, 51);
+        Culoare_background = Color.FromRgb(40, 120, 255);
+        Culoare = Color.FromRgb(255, 204, 51);
         Text_timp = "SUNRISE & SUNSET";
-        Todo.Culoare3 = "#2878FF";
+        Todo.Culoare3 = "40,120,255";
         Todo.Id = 3;
         if (Weather.Forecast.Forecastday[0].Astro.IsMoonUp == 0)
         {
             Todo.Id = 2;
-            Todo.Culoare3 = "#00008B";
-            Culoare = Color.FromArgb(255, 250, 250);
-            Culoare_background = Color.FromArgb(0, 0, 139);
+            Todo.Culoare3 = "255,250,250";
+            Culoare = Color.FromRgb(255, 250, 250);
+            Culoare_background = Color.FromRgb(0, 0, 139);
             Text_timp = "MOONRISE & MOONSET";
             Time_a = Weather.Forecast.Forecastday[0].Astro.Moonrise;
             Time_b = Weather.Forecast.Forecastday[0].Astro.Moonset;
@@ -715,10 +720,10 @@ public partial class MainViewModel : BaseViewModel
             if((Time_current - Time_start) > (Time_end - Time_start) && Weather.Forecast.Forecastday[0].Astro.IsMoonUp == 1) 
             {
                 Todo.Ok = 2;
-                Culoare = Color.FromArgb(255, 250, 250);
+                Culoare = Color.FromRgb(255, 250, 250);
                 
-                Culoare_background = Color.FromArgb(0, 0, 139);
-                Todo.Culoare3 = "#00008B";
+                Culoare_background = Color.FromRgb(0, 0, 139);
+                Todo.Culoare3 = "0,0,139";
                 Text_timp = "MOONRISE & MOONSET";
                 Time_a = Weather.Forecast.Forecastday[0].Astro.Moonrise;
                 Time_b = Weather.Forecast.Forecastday[0].Astro.Moonset;
