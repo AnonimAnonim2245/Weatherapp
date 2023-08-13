@@ -23,7 +23,7 @@
         <Border Grid.Row="3" StrokeShape="RoundRectangle 20,20,20,20" HeightRequest="450"  VerticalOptions="Start" WidthRequest="370" Padding="10,30" BackgroundColor="#30dee8f4" StrokeThickness="0">
 
             <Grid RowDefinitions="0,500"  >
-                <CollectionView ItemsSource="{Binding Todo.Weather2}"  ItemsLayout="HorizontalList"  VerticalOptions="Start" Grid.Row="1" >
+                <CollectionView ItemsSource="{Binding Weather_10}"  ItemsLayout="HorizontalList"  VerticalOptions="Start" Grid.Row="1" >
 
                     <CollectionView.ItemTemplate >
 

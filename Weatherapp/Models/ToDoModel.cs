@@ -1,4 +1,6 @@
 using SQLite;
+using Weatherapp.Models.WeatherModels;
+
 namespace Weatherapp.Models;
 
 [Table("ToDoModel")]
@@ -7,8 +9,7 @@ public class ToDoModel
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
 
-    public Color Culoare3 { get; set; }
-    public List<Weatherul> Weather2 { get; set; }
+    public string Culoare3 { get; set; }
 
     private string name;
 

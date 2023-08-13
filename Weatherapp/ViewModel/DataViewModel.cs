@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Maui.Graphics;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -10,38 +11,44 @@ using Weatherapp.Models;
 using Weatherapp.Services;
 using Weatherapp.Views;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
-using System.Linq;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Maui.Views;
+using System.Data.Common;
+using System.Windows.Input;
+using System.Linq;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Compatibility;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Weatherapp.ViewModel
 {
     public partial class DataViewModel : BaseViewModel, IQueryAttributable, INotifyPropertyChanged
     {
         [ObservableProperty]
-        List<ToDoModel> toDolist;
+        List<ToDoModel> toDoList;
 
         [ObservableProperty]
-        ToDoModel todo2;
+        ToDoModel todo;
 
         [ObservableProperty]
         ToDoModel toSaveOnDB;
         [ObservableProperty]
         ToDoModel toDeleteOnDB;
 
-        private readonly DbConnection _dbConnection;
+        private readonly Services.DbConnection _dbConnection;
         private readonly ObservableCollection<ToDoModel> models;
         //public ICommand DeleteCommand { get; }
 
 
-        public DataViewModel(DbConnection dbConnection)
+        public DataViewModel(Services.DbConnection dbConnection)
         {
             _dbConnection = dbConnection;
-            toDolist = new List<ToDoModel>();
+            toDoList = new List<ToDoModel>();
             toSaveOnDB = new ToDoModel();
-            todo2 = new ToDoModel();
+            todo = new ToDoModel();
+            //Todo.Id = 0;
             //models = new ObservableCollection<ToDoModel>();
             //DeleteCommand = new AsyncRelayCommand(DeleteModelAsync);
             GetInitalDataCommand.Execute(null);
@@ -51,7 +58,9 @@ namespace Weatherapp.ViewModel
         [RelayCommand]
         private async void GetInitalData()
         {
-            ToDolist = await _dbConnection.GetItemsAsync();
+
+            var toDoListBase = await _dbConnection.GetItemsAsync();
+            ToDoList = new List<ToDoModel>(toDoListBase);
         }
 
         [ObservableProperty]
@@ -78,12 +87,12 @@ namespace Weatherapp.ViewModel
                     Console.WriteLine(res2);
                     //var id = (int)query["IdUser"];
                     // Console.WriteLine(id);
-                    var todoItem = ToDolist.Where(x => x.Id == res2).FirstOrDefault();
+                    var todoItem = ToDoList.Where(x => x.Id == res2).FirstOrDefault();
                     Console.WriteLine(todoItem);
 
-                    ToDolist.Remove(todoItem);
+                    ToDoList.Remove(todoItem);
                     todoItem.Name = null;
-                    await _dbConnection.DeleteItemAsync(Todo2);
+                    await _dbConnection.DeleteItemAsync(Todo);
                     Console.WriteLine("1");
 
 
@@ -93,29 +102,34 @@ namespace Weatherapp.ViewModel
         [RelayCommand]
         public async Task DeleteOnDb(ToDoModel todo)
         {
-            ToDolist.Remove(todo);
+            ToDoList.Remove(todo);
             await _dbConnection.DeleteItemAsync(todo);
         }
         [RelayCommand]
         private async void SaveOnDb()
         {
 
+            if (ToSaveOnDB.Name == null)
+                return;
+            Console.WriteLine(ToSaveOnDB.Name);
+            ToDoList.Add(ToSaveOnDB);
+
             await _dbConnection.SaveItemAsync(ToSaveOnDB);
 
 
         }
-
+       
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            Todo2 = query["Todo"] as ToDoModel;
-            OnPropertyChanged("Todo");
 
-            if (query.ContainsKey("IdUser") && Todo2.Id == -3)
+            Todo = query["Todo"] as ToDoModel;
+            OnPropertyChanged("Todo");
+            if (query.ContainsKey("IdUser") && Todo.Id == -3)
             {
-                Console.WriteLine(Todo2.Ok);
+                Console.WriteLine(Todo.Ok);
                 var id = (int)query["IdUser"];
-                var todoItem = ToDolist.Where(x => x.Id == id).FirstOrDefault();
-                ToDolist.Remove(todoItem);
+                var todoItem = ToDoList.Where(x => x.Id == id).FirstOrDefault();
+                ToDoList.Remove(todoItem);
                 Console.WriteLine("1");
                 //el=Preferences.Default.Get("huh", 2);
                 Console.WriteLine("Before " + query);
@@ -124,10 +138,10 @@ namespace Weatherapp.ViewModel
                 Console.WriteLine("After " + query);
 
             }
-            if (query.ContainsKey("NameUser") && Todo2.Id == -5)
+            if (query.ContainsKey("NameUser") && Todo.Id == -5)
             {
 
-                Console.WriteLine(Todo2.Ok);
+                Console.WriteLine(Todo.Ok);
 
                 var element = (ToDoModel)query["NameUser"];
 
@@ -139,7 +153,7 @@ namespace Weatherapp.ViewModel
                 Console.WriteLine("Before " + query);
 
                 //SaveOnDbCommand.Execute(null);
-                ToDolist.Add(element);
+                ToDoList.Add(element);
                 //query = null;
                 query = new Dictionary<string, object>();
                 Console.WriteLine("After " + query);

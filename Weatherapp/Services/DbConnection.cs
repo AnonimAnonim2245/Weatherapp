@@ -1,8 +1,6 @@
 using Weatherapp.Models;
 using SQLite;
-
 namespace Weatherapp.Services;
-using Weatherapp.ViewModel;
 
 public class DbConnection
 {
@@ -75,6 +73,7 @@ public class DbConnection
     public async Task<int> SaveItemAsync(ToDoModel item)
     {
         await Init();
+        Console.WriteLine("###" + item.Name);
         return await Database.InsertAsync(item);
     }
 

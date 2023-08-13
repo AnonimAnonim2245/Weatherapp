@@ -13,7 +13,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:vm="clr-namespace:Weatherapp.ViewModel"
              xmlns:progressBar="clr-namespace:Syncfusion.Maui.ProgressBar;assembly=Syncfusion.Maui.ProgressBar"
-             BackgroundColor="Blue"
+             
              xmlns:gauge="clr-namespace:Syncfusion.Maui.Gauges;assembly=Syncfusion.Maui.Gauges"
              xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
              Shell.NavBarIsVisible="False"
@@ -46,10 +46,10 @@
                 Grid.Row="0"
                 Grid.Column="1"
                 Margin="5,7,1,8"/>
-           
 
-            <CollectionView SelectionMode="Single" SelectedItem="{Binding Todo2}" 
-                    ItemsSource="{Binding ToDolist}"
+
+            <CollectionView SelectionMode="Single" SelectedItem="{Binding Todo}" 
+                    ItemsSource="{Binding ToDoList}"
                     Grid.Row="2" 
                     Grid.ColumnSpan="2"
                     >
@@ -59,7 +59,7 @@
                             <SwipeView.RightItems>
                                 <SwipeItems>
 
-                                    <SwipeItemView Grid.Column="1" Command="{Binding Source={RelativeSource AncestorType={x:Type  vm:MainViewModel}}, Path=DeleteOnDbCommand}"
+                                    <SwipeItemView Grid.Column="1" Command="{Binding Source={RelativeSource AncestorType={x:Type  vm:DataViewModel}}, Path=DeleteOnDbCommand}"
                                                CommandParameter="{Binding .}">
                                         <StackLayout>
                                             <Button BackgroundColor="Red" HeightRequest="79" WidthRequest="140" Text="X"  Margin="-20,5" >
@@ -76,6 +76,7 @@
 
                                 </SwipeItems>
                             </SwipeView.RightItems>
+                            <SwipeView.Content>
                             <Border 
                                  VerticalOptions="Center"
                                  HorizontalOptions="Center">
@@ -93,7 +94,10 @@
                                    HorizontalOptions="Start"
                                    VerticalOptions="Center" />
                                     <Label Grid.Column="1" Margin="0" Text="{Binding Name}" FontSize="20">
-
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type  vm:DataViewModel}}, Path=GoToMoreInfoCommand}"
+                                                              CommandParameter="{Binding .}"/>
+                                        </Label.GestureRecognizers>
                                         <Label.Triggers>
 
                                             <DataTrigger 
@@ -125,6 +129,7 @@
                                 </Grid>
 
                             </Border>
+                            </SwipeView.Content>
                         </SwipeView>
                     </DataTemplate>
 
